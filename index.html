@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pricelist Aesthetic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fff5f8; --card:#ffffff; --ink:#5a4560; --soft:#9a869f; --line:#f6dfe8;
+  --pink:#ffc8dd; --pink-d:#e0709b; --lav:#e6dcff; --mint:#d3f4e6; --butter:#fff1bd; --sky:#d6ecff;
+  --shadow:0 8px 24px rgba(224,112,155,.14);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#2a2030;--card:#372b3f;--ink:#f6e8f0;--soft:#bba5c4;--line:#4a3b54;--pink:#6b3a53;--pink-d:#ff9ec2;--lav:#463a63;--mint:#2f5246;--butter:#5c5230;--sky:#2f4b63;--shadow:0 8px 24px rgba(0,0,0,.35)}
+}
+:root[data-theme="dark"]{--bg:#2a2030;--card:#372b3f;--ink:#f6e8f0;--soft:#bba5c4;--line:#4a3b54;--pink:#6b3a53;--pink-d:#ff9ec2;--lav:#463a63;--mint:#2f5246;--butter:#5c5230;--sky:#2f4b63;--shadow:0 8px 24px rgba(0,0,0,.35)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:'Gowun Dodum','Apple SD Gothic Neo','Segoe UI',sans-serif;font-size:16px;line-height:1.5;
+  padding:env(safe-area-inset-top,0px) 0 calc(120px + env(safe-area-inset-bottom,0px))}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(420px 300px at 90% -5%,var(--lav),transparent 70%),radial-gradient(380px 300px at -10% 20%,var(--pink),transparent 70%);opacity:.7}
+.app{max-width:480px;margin:0 auto;padding:18px 16px}
+h1,h2,.price,.chip,.btn{font-family:'Jua','Gowun Dodum',sans-serif;font-weight:400}
+button{font:inherit;color:inherit;cursor:pointer;border:0}
+:focus-visible{outline:3px solid var(--pink-d);outline-offset:2px}
+
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.icon-btn{width:42px;height:42px;border-radius:50%;background:var(--card);box-shadow:var(--shadow);font-size:18px}
+.icon-btn[aria-pressed="true"]{background:var(--pink-d);color:#fff}
+
+.hero{background:linear-gradient(145deg,var(--pink),var(--lav));border-radius:32px;padding:26px 22px;text-align:center;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero .logo{width:76px;height:76px;margin:0 auto 10px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:38px;box-shadow:0 6px 16px rgba(0,0,0,.08)}
+.hero .logo{overflow:hidden}
+.hero .logo img{width:100%;height:100%;object-fit:cover;display:block}
+.hero h1{font-size:30px;margin:0;line-height:1.15}
+.hero p{margin:6px 0 0;color:var(--ink);opacity:.8}
+.hero::after{content:"✿";position:absolute;right:16px;top:8px;font-size:26px;opacity:.5}
+.hero::before{content:"♡";position:absolute;left:16px;bottom:8px;font-size:24px;opacity:.5}
+
+.chips{display:flex;gap:8px;overflow-x:auto;padding:16px 2px 8px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:8px 16px;border-radius:99px;background:var(--card);box-shadow:var(--shadow);font-size:15px;transition:background .2s}
+.chip[aria-selected="true"]{background:var(--pink-d);color:#fff}
+
+.cat{margin-top:18px}
+.cat-h{display:flex;align-items:center;gap:10px;margin:0 4px 10px}
+.cat-h .em{width:38px;height:38px;border-radius:14px;display:grid;place-items:center;font-size:20px}
+.cat:nth-child(4n+1) .em{background:var(--pink)}.cat:nth-child(4n+2) .em{background:var(--mint)}
+.cat:nth-child(4n+3) .em{background:var(--butter)}.cat:nth-child(4n) .em{background:var(--sky)}
+.cat-h h2{font-size:21px;margin:0;flex:1}
+.item{background:var(--card);border-radius:22px;padding:14px 14px 14px 16px;margin-bottom:10px;display:flex;gap:12px;align-items:center;box-shadow:var(--shadow)}
+.item .info{flex:1;min-width:0}
+.item .nm{font-size:17px;line-height:1.3}
+.item .ds{font-size:13.5px;color:var(--soft);margin-top:2px}
+.price{color:var(--pink-d);font-size:17px;margin-top:4px}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:34px;height:34px;border-radius:50%;background:var(--lav);font-size:18px;line-height:1}
+.qty .add{background:var(--pink-d);color:#fff}
+.qty b{min-width:20px;text-align:center;font-family:'Jua',sans-serif;font-weight:400}
+
+.note{margin:22px 4px 0;font-size:14px;color:var(--soft);text-align:center}
+.empty{text-align:center;color:var(--soft);padding:30px 10px}
+
+/* edit mode */
+[contenteditable="true"]{outline:2px dashed var(--pink-d);outline-offset:3px;border-radius:8px;min-width:30px;display:inline-block;cursor:text}
+.edit-only{display:none}
+body.editing .edit-only{display:inline-flex}
+body.editing .qty{display:none}
+.mini{border-radius:99px;padding:6px 12px;background:var(--mint);font-size:13px;font-family:'Jua',sans-serif}
+.mini.del{background:var(--pink)}
+.row-tools{display:none;gap:6px;margin-top:8px}
+body.editing .row-tools{display:flex}
+.panel{display:none;background:var(--card);border-radius:22px;padding:14px;margin-top:14px;box-shadow:var(--shadow);gap:8px;flex-wrap:wrap;align-items:center}
+body.editing .panel{display:flex}
+.panel label{font-size:13px;color:var(--soft);width:100%}
+
+/* cart bar */
+.bar{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;padding:0 14px calc(14px + env(safe-area-inset-bottom,0px));pointer-events:none;transform:translateY(140%);transition:transform .35s cubic-bezier(.2,.9,.3,1.2)}
+.bar.show{transform:none}
+.bar-in{pointer-events:auto;width:100%;max-width:452px;background:var(--ink);color:var(--bg);border-radius:26px;padding:12px 12px 12px 20px;display:flex;align-items:center;gap:10px;box-shadow:0 12px 30px rgba(90,69,96,.35)}
+.bar-in .t{flex:1;font-size:13px;opacity:.85;line-height:1.2}
+.bar-in .t b{display:block;font-family:'Jua',sans-serif;font-weight:400;font-size:20px;opacity:1}
+.btn{background:var(--pink-d);color:#fff;border-radius:18px;padding:12px 18px;font-size:16px}
+.btn.ghost{background:transparent;color:inherit;opacity:.8;padding:12px 8px}
+.toast{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top,0px));transform:translate(-50%,-150%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;transition:transform .3s;font-size:14px;z-index:9}
+.toast.show{transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <button class="icon-btn" id="theme" aria-label="Ganti tema">🌙</button>
+    <button class="icon-btn" id="editBtn" aria-pressed="false" aria-label="Mode edit">✏️</button>
+  </div>
+
+  <header class="hero">
+    <div class="logo" id="logo"></div>
+    <h1 data-s="name"></h1>
+    <p data-s="tagline"></p>
+  </header>
+
+  <section class="panel" id="panel">
+    <label>Mode edit aktif. Ketuk teks bertanda garis putus-putus untuk mengubahnya.</label>
+    <button class="mini" id="addCat">+ Kategori</button>
+    <button class="mini" id="exportBtn">Unduh index.html baru</button>
+    <button class="mini del" id="resetBtn">Kembalikan awal</button>
+    <label style="margin-top:6px">Logo toko: pilih foto dari galeri atau pakai emoji</label>
+    <button class="mini" id="pickLogo">📷 Pilih dari galeri</button>
+    <button class="mini del" id="delLogo">Hapus gambar</button>
+    <input type="file" id="logoFile" accept="image/*" hidden>
+    <label style="margin-top:6px">Emoji logo &amp; nomor WhatsApp (format 628xxx)</label>
+    <input id="logoIn" size="4" maxlength="4" style="font-size:18px;border-radius:14px;border:2px solid var(--line);padding:6px 10px;background:var(--bg);color:var(--ink)">
+    <input id="waIn" inputmode="numeric" placeholder="628123456789" style="flex:1;min-width:140px;font-size:16px;border-radius:14px;border:2px solid var(--line);padding:8px 12px;background:var(--bg);color:var(--ink)">
+  </section>
+
+  <nav class="chips" id="chips" role="tablist" aria-label="Kategori"></nav>
+  <main id="list"></main>
+  <p class="note" data-s="note"></p>
+</div>
+
+<div class="bar" id="bar"><div class="bar-in">
+  <div class="t"><span id="cnt"></span><b id="tot"></b></div>
+  <button class="btn ghost" id="clear">Reset</button>
+  <button class="btn" id="send">Pesan</button>
+</div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script type="application/json" id="seed">
+{"name":"Cloud Nine Studio","tagline":"Pricelist jasa & produk lucu ala Korea ♡","logo":"🧸","wa":"","note":"Harga bisa berubah sewaktu-waktu. Tanya admin untuk request khusus ya ✿",
+"cats":[
+{"name":"Paket Populer","emoji":"🍓","items":[
+{"n":"Paket Basic","d":"Cocok untuk pemula, pengerjaan 1-2 hari","p":25000},
+{"n":"Paket Cute","d":"Include bonus sticker lucu","p":45000},
+{"n":"Paket Premium","d":"Prioritas + revisi 3x","p":85000}]},
+{"name":"Add-on","emoji":"🎀","items":[
+{"n":"Revisi Tambahan","d":"Per sekali revisi","p":5000},
+{"n":"Express 24 Jam","d":"Dikerjakan lebih dulu","p":15000}]},
+{"name":"Bundle Hemat","emoji":"🌷","items":[
+{"n":"Bundle Duo","d":"2 paket Cute, lebih hemat","p":80000}]}
+]}
+</script>
+
+<script>
+const $=s=>document.querySelector(s);
+const SEED=JSON.parse($('#seed').textContent);
+const KEY='pricelist_v1';
+let D,cart={},active=-1,editing=false;
+try{D=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+if(!D||!D.cats)D=JSON.parse(JSON.stringify(SEED));
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const rp=n=>'Rp'+(Number(n)||0).toLocaleString('id-ID');
+const ce=()=>editing?' contenteditable="true"':'';
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),1800)}
+
+function setLogo(){
+  const l=$('#logo');l.textContent='';
+  if(D.logoImg){const i=new Image();i.src=D.logoImg;i.alt='Logo '+(D.name||'toko');l.appendChild(i)}
+  else l.textContent=D.logo||'🧸';
+  $('#delLogo').style.display=D.logoImg?'':'none';
+}
+function render(){
+  document.querySelectorAll('[data-s]').forEach(e=>{e.textContent=D[e.dataset.s]||'';e.contentEditable=editing?'true':'false'});
+  setLogo();
+  $('#logoIn').value=D.logo||'';$('#waIn').value=D.wa||'';
+  if(active>=D.cats.length)active=-1;
+  $('#chips').innerHTML=['Semua',...D.cats.map(c=>c.emoji+' '+c.name)].map((t,i)=>
+    `<button class="chip" role="tab" data-chip="${i-1}" aria-selected="${i-1===active}">${esc(t)}</button>`).join('');
+  const cats=D.cats.map((c,ci)=>({c,ci})).filter(x=>active<0||x.ci===active);
+  $('#list').innerHTML=cats.length?cats.map(({c,ci})=>`
+  <section class="cat">
+    <div class="cat-h"><span class="em"${ce()} data-c="${ci}" data-k="emoji">${esc(c.emoji)}</span>
+      <h2${ce()} data-c="${ci}" data-k="name">${esc(c.name)}</h2>
+      <button class="mini del edit-only" data-delcat="${ci}">Hapus</button></div>
+    ${c.items.map((it,ii)=>`
+    <article class="item"><div class="info">
+      <div class="nm"${ce()} data-c="${ci}" data-i="${ii}" data-k="n">${esc(it.n)}</div>
+      <div class="ds"${ce()} data-c="${ci}" data-i="${ii}" data-k="d">${esc(it.d)}</div>
+      <div class="price">${editing?'Rp <span contenteditable="true" inputmode="numeric" data-c="'+ci+'" data-i="'+ii+'" data-k="p">'+(Number(it.p)||0)+'</span>':rp(it.p)}</div>
+      <div class="row-tools"><button class="mini del" data-delitem="${ci}.${ii}">Hapus item</button></div>
+    </div>
+    <div class="qty">${(cart[ci+'.'+ii]||0)>0?`<button data-q="${ci}.${ii}" data-d="-1" aria-label="Kurangi">−</button><b>${cart[ci+'.'+ii]}</b>`:''}<button class="add" data-q="${ci}.${ii}" data-d="1" aria-label="Tambah">+</button></div>
+    </article>`).join('')}
+    <button class="mini edit-only" data-additem="${ci}">+ Item</button>
+  </section>`).join(''):'<p class="empty">Belum ada kategori. Aktifkan mode edit lalu tambah kategori ya ✿</p>';
+  bar();
+}
+function bar(){
+  let n=0,t=0;
+  for(const k in cart){const[c,i]=k.split('.');const it=D.cats[c]?.items[i];if(it){n+=cart[k];t+=cart[k]*(Number(it.p)||0)}}
+  $('#cnt').textContent=n+' item dipilih';$('#tot').textContent=rp(t);
+  $('#bar').classList.toggle('show',n>0&&!editing);
+  return{n,t};
+}
+function orderText(){
+  let lines=[`Halo kak, aku mau pesan di ${D.name} ♡`,''];let t=0;
+  for(const k in cart){const[c,i]=k.split('.');const it=D.cats[c]?.items[i];if(!it)continue;
+    const s=cart[k]*(Number(it.p)||0);t+=s;lines.push(`• ${it.n} x${cart[k]} = ${rp(s)}`)}
+  lines.push('',`Total: ${rp(t)}`);return lines.join('\n');
+}
+
+document.addEventListener('input',e=>{
+  const el=e.target;
+  if(el.dataset.s){D[el.dataset.s]=el.textContent;save();return}
+  if(el.dataset.k){const c=D.cats[el.dataset.c];const k=el.dataset.k;
+    if(el.dataset.i!==undefined){c.items[el.dataset.i][k]=k==='p'?(parseInt(el.textContent.replace(/\D/g,''))||0):el.textContent}
+    else c[k]=el.textContent;save()}
+});
+$('#logoIn').oninput=e=>{D.logo=e.target.value;setLogo();save()};
+$('#pickLogo').onclick=()=>$('#logoFile').click();
+$('#delLogo').onclick=()=>{delete D.logoImg;setLogo();save()};
+$('#logoFile').onchange=e=>{
+  const f=e.target.files[0];e.target.value='';if(!f)return;
+  const url=URL.createObjectURL(f),img=new Image();
+  img.onload=()=>{
+    const S=256,c=document.createElement('canvas');c.width=c.height=S;
+    const m=Math.min(img.width,img.height),x=(img.width-m)/2,y=(img.height-m)/2;
+    c.getContext('2d').drawImage(img,x,y,m,m,0,0,S,S);
+    D.logoImg=c.toDataURL('image/jpeg',.85);URL.revokeObjectURL(url);
+    setLogo();save();toast('Logo diperbarui ✿');
+  };
+  img.onerror=()=>toast('Gambar tidak bisa dibaca, coba file lain');
+  img.src=url;
+};
+$('#waIn').oninput=e=>{D.wa=e.target.value.replace(/\D/g,'');save()};
+
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  const d=b.dataset;
+  if(d.chip!==undefined){active=+d.chip;render()}
+  else if(d.q){cart[d.q]=Math.max(0,(cart[d.q]||0)+(+d.d));if(!cart[d.q])delete cart[d.q];render()}
+  else if(d.additem!==undefined){D.cats[d.additem].items.push({n:'Item baru',d:'Deskripsi singkat',p:10000});save();render()}
+  else if(d.delitem){const[c,i]=d.delitem.split('.');if(confirm('Hapus item ini?')){D.cats[c].items.splice(i,1);cart={};save();render()}}
+  else if(d.delcat!==undefined){if(confirm('Hapus kategori beserta isinya?')){D.cats.splice(d.delcat,1);cart={};save();render()}}
+});
+$('#addCat').onclick=()=>{D.cats.push({name:'Kategori baru',emoji:'🌸',items:[{n:'Item baru',d:'Deskripsi singkat',p:10000}]});save();render()};
+$('#editBtn').onclick=e=>{editing=!editing;document.body.classList.toggle('editing',editing);e.currentTarget.setAttribute('aria-pressed',editing);render();toast(editing?'Mode edit aktif':'Perubahan tersimpan di browser ini')};
+$('#clear').onclick=()=>{cart={};render()};
+$('#send').onclick=()=>{
+  const txt=orderText();
+  if(D.wa){location.href='https://wa.me/'+D.wa+'?text='+encodeURIComponent(txt)}
+  else{(navigator.clipboard?.writeText(txt)||Promise.reject()).then(()=>toast('Nomor WA belum diisi, pesanan disalin ✿'),()=>prompt('Salin pesanan:',txt))}
+};
+$('#resetBtn').onclick=()=>{if(confirm('Kembalikan ke data awal file ini? Perubahan di browser akan hilang.')){D=JSON.parse(JSON.stringify(SEED));cart={};save();render()}};
+$('#exportBtn').onclick=()=>{
+  const seed=$('#seed');const old=seed.textContent;
+  seed.textContent='\n'+JSON.stringify(D)+'\n';
+  const html='<!DOCTYPE html>\n'+document.documentElement.outerHTML.replace(/ class="editing"/,'');
+  seed.textContent=old;
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));a.download='index.html';a.click();
+  toast('index.html baru diunduh ✿');
+};
+$('#theme').onclick=()=>{
+  const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue('--bg').trim()==='#2a2030';
+  r.dataset.theme=dark?'light':'dark';$('#theme').textContent=dark?'🌙':'☀️';
+};
+render();
+</script>
+</body>
+</html>
