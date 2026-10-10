@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Soft Stock ✿ Arsip Akun</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#fffaf5;--pink:#ffd6e0;--pink-d:#f7a8bd;--rose:#e98aa5;
+  --lav:#e4dcff;--lav-d:#b9a8f0;--mint:#d5f2e3;--mint-d:#6fc79b;--peach:#ffe6d1;
+  --ink:#5b4a56;--ink-soft:#9a8a95;--card:#ffffffcc;
+  --shadow:0 10px 30px rgba(233,138,165,.18);--radius:22px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{
+  font-family:'Quicksand',system-ui,sans-serif;color:var(--ink);min-height:100vh;
+  background:
+    radial-gradient(circle at 10% 10%,var(--pink) 0,transparent 40%),
+    radial-gradient(circle at 90% 20%,var(--lav) 0,transparent 40%),
+    radial-gradient(circle at 50% 100%,var(--peach) 0,transparent 45%),
+    var(--cream);
+  background-attachment:fixed;
+}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 18px 60px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:6px 0 14px}
+.brand{font-family:'Gaegu',cursive;font-size:32px;font-weight:700;color:var(--rose);display:flex;align-items:center;gap:8px;line-height:1}
+.brand small{font-family:'Quicksand';font-size:12px;color:var(--ink-soft);font-weight:600;display:block;margin-top:2px}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.btn{
+  border:none;cursor:pointer;font-family:inherit;font-weight:600;font-size:14px;padding:10px 18px;border-radius:999px;
+  background:var(--pink);color:var(--ink);transition:.2s;box-shadow:0 4px 12px rgba(233,138,165,.15);
+}
+.btn:hover{transform:translateY(-2px);background:var(--pink-d);color:#fff}
+.btn.lav{background:var(--lav)}.btn.lav:hover{background:var(--lav-d);color:#fff}
+.btn.mint{background:var(--mint)}.btn.mint:hover{background:var(--mint-d);color:#fff}
+.btn.ghost{background:#fff;border:1.5px dashed var(--pink-d)}
+.btn.sm{padding:6px 11px;font-size:12px}
+.btn.danger:hover{background:#f08a8a}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.bar input{flex:1;min-width:180px}
+.chips{display:flex;gap:6px}
+.chip{padding:8px 14px;border-radius:999px;border:none;background:#ffffffaa;cursor:pointer;font-family:inherit;font-weight:700;font-size:13px;color:var(--ink-soft)}
+.chip.on{background:var(--pink-d);color:#fff}
+.stats{font-size:13px;font-weight:700;color:var(--ink-soft);margin-bottom:14px}
+
+.papers{display:flex;flex-direction:column;gap:42px;max-width:700px;margin:0 auto}
+.bar,.stats{max-width:700px;margin-left:auto;margin-right:auto}
+.paper{
+  position:relative;background:#fffdf6;border:1px solid #f3e8c4;border-radius:8px 8px 26px 8px;
+  padding:34px 18px 18px;box-shadow:0 14px 32px rgba(190,160,90,.22);
+}
+.paper:before{
+  content:"";position:absolute;top:-11px;left:50%;width:96px;height:24px;transform:translateX(-50%) rotate(-2deg);
+  background:var(--pink);opacity:.85;border-radius:4px;
+}
+.paper:nth-child(3n+2):before{background:var(--lav)}
+.paper:nth-child(3n):before{background:var(--mint)}
+.phead{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.ptitle{font-family:'Gaegu',cursive;font-size:26px;font-weight:700;color:var(--rose);line-height:1.1;word-break:break-word}
+.pcount{font-size:12px;font-weight:700;color:var(--ink-soft);margin-top:4px}
+.pcount b{color:var(--mint-d)}
+.ptools{display:flex;gap:4px;flex-shrink:0}
+details.snk{margin:12px 0;background:#fff;border:1.5px dashed var(--pink-d);border-radius:14px;padding:8px 12px}
+details.snk summary{cursor:pointer;font-weight:700;font-size:13px;color:var(--rose);list-style:none}
+details.snk summary::-webkit-details-marker{display:none}
+.snktext{white-space:pre-wrap;line-height:1.8;font-size:13px;font-weight:500;margin:8px 0 6px}
+.accs{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.acc{padding:18px 4px 16px;border-bottom:1.5px dashed var(--pink-d);font-size:14px}
+.acc:last-child{border-bottom:none}
+.acc.sold{opacity:.55}
+.kgap{height:28px}
+.kblock{background:#fff;border:1.5px dashed var(--lav-d);border-radius:16px;padding:10px 14px}
+.klabel{font-size:12px;font-weight:700;color:var(--ink-soft);margin-bottom:2px}
+.kval{font-weight:600;font-size:13px;letter-spacing:.5px}
+.ln{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:30px;font-weight:600;word-break:break-all}
+.ln .k{flex:0 0 22px}
+.ln .v{flex:1}
+.ln .mono{font-size:12px;color:var(--ink-soft)}
+.noteln{font-size:12px;color:var(--ink-soft);font-weight:600;margin-top:2px;word-break:break-word}
+.otpbox{background:var(--lav);border-radius:12px;padding:8px 12px;margin-top:6px}
+.otpbox .row2{display:flex;align-items:center;justify-content:space-between}
+.otpcode{font-family:'Gaegu',cursive;font-size:30px;letter-spacing:5px;font-weight:700;color:var(--rose)}
+.tbar{height:5px;background:#ffffffaa;border-radius:9px;overflow:hidden;margin-top:2px}
+.tbar i{display:block;height:100%;background:var(--rose);transition:width 1s linear}
+.prevln{font-size:12px;font-weight:600;color:var(--ink-soft);margin-top:6px}
+.prevln b{letter-spacing:2px;color:var(--ink)}
+.abtn{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+.badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:700;background:var(--mint);color:#3c8d65}
+.badge.s{background:#eee;color:#999}
+.pfoot{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:12px}
+.empty{text-align:center;color:var(--ink-soft);padding:40px 10px;font-weight:600;grid-column:1/-1}
+
+dialog{
+  border:none;border-radius:26px;padding:24px;max-width:560px;width:92vw;background:var(--cream);
+  box-shadow:0 20px 60px rgba(91,74,86,.3);color:var(--ink);font-family:inherit;
+}
+dialog::backdrop{background:rgba(91,74,86,.35);backdrop-filter:blur(3px)}
+dialog h2{font-family:'Gaegu',cursive;color:var(--rose);font-size:28px;margin-bottom:10px}
+label{display:block;font-size:13px;font-weight:700;margin:10px 0 4px;color:var(--ink-soft)}
+.pagetabs{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 14px;max-width:700px;margin:0 auto 4px;scrollbar-width:none}
+.pagetabs::-webkit-scrollbar{display:none}
+.ptab{flex:0 0 auto;padding:9px 16px;border-radius:999px;border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:14px;background:#ffffffaa;color:var(--ink-soft);transition:.2s}
+.ptab.on{background:var(--pink-d);color:#fff;box-shadow:0 6px 14px rgba(233,138,165,.3)}
+.ptab .pn{display:inline-block;margin-left:4px;min-width:20px;padding:0 6px;border-radius:999px;background:var(--pink);color:var(--ink);font-size:12px;line-height:20px}
+.ptab.on .pn{background:#ffffff55;color:#fff}
+.ptab.add{background:#fff;border:1.5px dashed var(--pink-d);color:var(--ink)}
+input,textarea,select{
+  width:100%;padding:11px 14px;border-radius:14px;border:1.5px solid var(--pink);background:#fff;
+  font-family:inherit;font-size:14px;color:var(--ink);outline:none;
+}
+input:focus,textarea:focus,select:focus{border-color:var(--rose);box-shadow:0 0 0 3px var(--pink)}
+textarea{resize:vertical;min-height:90px}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.dfoot{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.hint{font-size:12px;color:var(--ink-soft);margin-top:6px;line-height:1.6;font-weight:500}
+#lock{display:grid;place-items:center;min-height:100vh;padding:20px}
+.lockbox{background:var(--card);border-radius:30px;box-shadow:var(--shadow);padding:34px 28px;text-align:center;max-width:340px;width:100%}
+.lockbox h1{font-family:'Gaegu',cursive;color:var(--rose);font-size:34px}
+.lockbox input{text-align:center;margin:14px 0;font-weight:700;letter-spacing:4px}
+.toast{
+  position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;
+  padding:11px 22px;border-radius:999px;font-weight:600;font-size:14px;transition:.3s;z-index:99;opacity:0;max-width:92vw;text-align:center
+}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+footer{text-align:center;margin-top:40px;color:var(--ink-soft);font-size:13px}
+</style>
+</head>
+<body>
+
+<div id="lock" hidden>
+  <div class="lockbox">
+    <h1>🌸 Soft Stock</h1>
+    <p class="hint">Masukkan PIN untuk membuka arsip</p>
+    <input type="password" id="pinInput" placeholder="PIN" autocomplete="off">
+    <button class="btn" id="unlockBtn">Buka ✿</button>
+  </div>
+</div>
+
+<div class="wrap" id="app" hidden>
+  <div class="topbar">
+    <div class="brand">🌸 <div><span id="brand">Soft Stock</span><small>arsip akun premium</small></div></div>
+    <div class="tools">
+      <button class="btn" id="addProd">＋ Kertas Baru</button>
+      <button class="btn mint" id="gSnk">📌 S&K Umum</button>
+      <button class="btn lav" id="setBtn">⚙️</button>
+      <button class="btn ghost" id="expBtn">⬇ Backup</button>
+      <button class="btn ghost" id="impBtn">⬆ Restore</button>
+      <button class="btn ghost" id="cpData">📋 Salin data</button>
+      <button class="btn ghost" id="pasteData">📥 Tempel data</button>
+      <button class="btn lav" id="expHtml">📦 Unduh index.html + data</button>
+      <button class="btn ghost" id="lockBtn" hidden>🔒 Kunci</button>
+      <input type="file" id="impFile" accept=".json" hidden>
+    </div>
+  </div>
+
+  <div class="pagetabs" id="pageTabs"></div>
+
+  <div class="bar">
+    <input id="q" placeholder="🔍 cari email / catatan / nama kertas…">
+    <div class="chips">
+      <button class="chip on" data-f="all">Semua</button>
+      <button class="chip" data-f="ready">Tersedia</button>
+      <button class="chip" data-f="sold">Terjual</button>
+    </div>
+  </div>
+  <div class="stats" id="stats"></div>
+
+  <div class="papers" id="list"></div>
+
+  <footer>made with 🤍 · data tersimpan di browser ini — rutin Backup ya</footer>
+</div>
+
+<!-- Kertas -->
+<dialog id="dProd">
+  <h2 id="prodTitle">Kertas Baru</h2>
+  <input type="hidden" id="pId">
+  <div class="row">
+    <div style="flex:0 0 90px"><label>Emoji</label><input id="pIcon" maxlength="4" value="🌷"></div>
+    <div><label>Judul</label><input id="pName" placeholder="mis. CHATGPT SHARING ONE MONTH"></div>
+  </div>
+  <label>Halaman</label><select id="pPage"></select>
+  <label>S&K kertas ini (kosongkan untuk pakai S&K Umum)</label>
+  <textarea id="pSnk" style="min-height:200px" placeholder="❗ SYARAT & KETENTUAN ❗&#10;📍 USE 1 DEVICE ONLY&#10;📍 don't change email & password&#10;..."></textarea>
+  <div class="dfoot"><button class="btn ghost" data-close>Batal</button><button class="btn" id="saveProd">Simpan</button></div>
+</dialog>
+
+<!-- S&K umum -->
+<dialog id="dGen">
+  <h2>S&K Umum 📌</h2>
+  <textarea id="gText" style="min-height:260px"></textarea>
+  <div class="dfoot"><button class="btn ghost" data-close>Batal</button><button class="btn" id="saveGen">Simpan</button></div>
+</dialog>
+
+<!-- Tambah akun -->
+<dialog id="dAdd">
+  <h2 id="addTitle">Tambah Akun</h2>
+  <input type="hidden" id="aPid">
+  <label>✉️ Email / Username</label><input id="aEmail" placeholder="akun@gmail.com" autocomplete="off">
+  <label>🔒 Password</label><input id="aPass" autocomplete="off">
+  <label>🛡️ Kode Akses 2FA (beda untuk tiap akun)</label><input id="aTfa" placeholder="mis. JBSWY3DPEHPK3PXP" autocomplete="off">
+  <label>📝 Catatan / pembeli (opsional)</label><input id="aNote" autocomplete="off">
+  <p class="hint">Kode akses = kunci 2FA (seperti di 2fa.live), nanti otomatis jadi kode 6 digit.</p>
+  <details style="margin-top:10px">
+    <summary class="hint" style="cursor:pointer;font-weight:700">Tambah banyak sekaligus</summary>
+    <label>1 baris = 1 akun · format: email|password|kode akses 2FA|catatan</label>
+    <textarea id="aBulk" style="min-height:110px" placeholder="akun1@mail.com|pass123|JBSWY3DPEHPK3PXP|pembeli: Rina&#10;akun2@mail.com|pass456|KUNCI2FA"></textarea>
+  </details>
+  <div class="dfoot"><button class="btn ghost" data-close>Batal</button><button class="btn mint" id="saveAddMore">Simpan & tambah lagi</button><button class="btn" id="saveAdd">Simpan</button></div>
+</dialog>
+
+<!-- Edit akun -->
+<dialog id="dEA">
+  <h2>Edit Akun ✏️</h2>
+  <input type="hidden" id="ePid"><input type="hidden" id="eId">
+  <label>Email / Username</label><input id="eEmail">
+  <label>Password</label><input id="ePass">
+  <label>Kode akses 2FA (kunci)</label><input id="eTfa" placeholder="mis. JBSWY3DPEHPK3PXP" autocomplete="off">
+  <label>Catatan / pembeli</label><input id="eNote">
+  <div class="dfoot"><button class="btn ghost" data-close>Batal</button><button class="btn" id="saveEA">Simpan</button></div>
+</dialog>
+
+<!-- Pengaturan -->
+<dialog id="dSet">
+  <h2>Pengaturan ⚙️</h2>
+  <label>Nama arsip</label><input id="sName">
+  <label>PIN pembuka (kosongkan = tanpa kunci)</label><input id="sPin" type="password" placeholder="mis. 1234" autocomplete="off">
+  <p class="hint">PIN hanya pengaman ringan supaya tidak sembarang orang lihat layarmu.</p>
+  <div class="dfoot"><button class="btn ghost" data-close>Batal</button><button class="btn" id="saveSet">Simpan</button></div>
+</dialog>
+
+<!-- Ekspor index.html + data -->
+<dialog id="dExp">
+  <h2>Unduh index.html + Data 📦</h2>
+  <p class="hint">File yang diunduh membawa seluruh isi arsipmu (halaman, kertas, akun, kode akses). Isi kata sandi supaya datanya <b>dienkripsi</b> (diminta saat file dibuka pertama kali), atau <b>kosongkan</b> supaya langsung terbuka tanpa kata sandi — siapa pun yang punya link bisa membaca isinya.</p>
+  <label>Kata sandi (kosongkan = tanpa kata sandi; min. 4 karakter)</label>
+  <input id="xPw" type="password" autocomplete="off">
+  <div class="dfoot"><button class="btn ghost" data-close>Batal</button><button class="btn mint" id="xCopy">📋 Salin kode</button><button class="btn" id="xDl">⬇ Unduh</button></div>
+  <p class="hint">Kalau tombol Unduh tidak bereaksi, pakai <b>Salin kode</b> lalu tempel ke file bernama <b>index.html</b>.</p>
+</dialog>
+
+<!-- Buka data terenkripsi -->
+<dialog id="dSeed">
+  <h2>Data ditemukan 🔐</h2>
+  <p class="hint">File ini membawa data arsip yang terenkripsi. Masukkan kata sandi untuk membukanya.</p>
+  <input id="sdPw" type="password" autocomplete="off" placeholder="kata sandi">
+  <div class="dfoot"><button class="btn ghost" data-close>Nanti</button><button class="btn" id="sdGo">Buka</button></div>
+</dialog>
+
+<!-- Salin manual (kalau clipboard diblokir) -->
+<dialog id="dShow">
+  <h2>Salin manual 📋</h2>
+  <p class="hint">Browser memblokir salin otomatis. Tekan <b>Pilih semua</b>, lalu tahan teksnya dan pilih <b>Salin</b>.</p>
+  <textarea id="showText" readonly style="min-height:180px"></textarea>
+  <div class="dfoot"><button class="btn ghost" data-close>Tutup</button><button class="btn" id="showSel">Pilih semua</button></div>
+</dialog>
+
+<!-- Tempel data -->
+<dialog id="dPaste">
+  <h2>Tempel Data 📥</h2>
+  <p class="hint">Paste teks hasil <b>📋 Salin data</b> dari tempat lama. Semua data di halaman ini akan diganti.</p>
+  <textarea id="pasteText" style="min-height:160px" placeholder="paste di sini…"></textarea>
+  <div class="dfoot"><button class="btn ghost" data-close>Batal</button><button class="btn" id="pasteGo">Pulihkan</button></div>
+</dialog>
+
+<!-- Halaman -->
+<dialog id="dPage">
+  <h2 id="pgTitle">Halaman Baru</h2>
+  <input type="hidden" id="pgId">
+  <div class="row">
+    <div style="flex:0 0 90px"><label>Emoji</label><input id="pgIcon" maxlength="4" value="🌷"></div>
+    <div><label>Nama halaman</label><input id="pgName" placeholder="mis. ChatGPT Plus"></div>
+  </div>
+  <div class="dfoot"><button class="btn danger" id="pgDel" hidden style="margin-right:auto">Hapus halaman</button><button class="btn ghost" data-close>Batal</button><button class="btn" id="pgSave">Simpan</button></div>
+</dialog>
+
+<!-- Konfirmasi hapus -->
+<dialog id="dConf">
+  <h2>Yakin? 🥺</h2>
+  <p id="cMsg" style="font-size:14px;font-weight:600;line-height:1.6"></p>
+  <div class="dfoot"><button class="btn ghost" data-close>Batal</button><button class="btn danger" id="cOk">Ya, hapus</button></div>
+</dialog>
+
+<div class="toast" id="toast"></div>
+
+<script id="seed" type="application/json">{"v":1,"plain":{"settings":{"name":"Soft Stock","pin":""},"snk":"❗ SYARAT & KETENTUAN ❗\n📍 USE 1 DEVICE ONLY\n📍 Jangan ubah email & password\n📍 Tidak boleh login-logout, gunakan device tetap\n📍 Jika butuh verifikasi untuk login, hubungi admin\n📍 Kirim bukti login (proof) maksimal 1x24 jam\n\n📌 Garansi hangus jika:\n— tidak mengirim proof login dalam 1x24 jam\n— melanggar S&K di atas","products":[{"id":"odc80fxm","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : alessyaax@gmail.com\n🔒: Hitungdulu2!\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"ypqcflbr","email":"alessyaax@gmail.com","pass":"Hitungdulu2!","tfa":"3V4VLXOEKNUDME4M2FBDKP752REES64Q","note":"FULL","sold":false}]},{"id":"pb40yngm","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : aeserlyn@gmail.com\n🔒: Hitungdulu3!\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"tl4pncsn","email":"aeserlyn@gmail.com","pass":"Hitungdulu3!","tfa":"PF6CBB4JDZQEZB3ZA4PAZ477FZU3GWQMPF6CBB4JDZQEZB3ZA4PAZ477FZU3GWQM","note":"FULL","sold":false}]},{"id":"4k6klfq0","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : voctarsx@gmail.com\n🔒: Hitungdulu5!\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"h2sh73jk","email":"voctarsx@gmail.com","pass":"Hitungdulu5!","tfa":"PDRINYRJQ4EBZDXH2O7WDWUUTZD64UYD","note":"FULL","sold":false}]},{"id":"qirr68u6","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : ddoullase@gmail.com\n🔒: Chatgptgiare2026\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"yke5qpof","email":"ddoullase@gmail.com","pass":"Chatgptgiare2026","tfa":"O3XKKFGQCMF2GVYQNXE3Q4GNJK4FH6TM","note":"FULL","sold":false}]},{"id":"2fvgcy5s","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : navyskyxs@gmail.com\n🔒: Chatgptgiare2026\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"eeknnk0m","email":"navyskyxs@gmail.com","pass":"Chatgptgiare2026","tfa":"S3IBVULUGE7H2SKIM2SZFKB7QVKSTEXR","note":"FULL","sold":false}]},{"id":"p1mm2tvk","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : wiindii638@gmail.com\n🔒: CHATGPT@8386\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"8td6famd","email":"wiindii638@gmail.com","pass":"CHATGPT@8386","tfa":"VCFZR3XAIQAR4F7R4VRB4QYVLYJ4IKH6","note":"FULL","sold":false}]},{"id":"bqqboyr3","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : miloesyx@gmail.com\n🔒: Hitungaja18!\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"td86awnt","email":"miloesyx@gmail.com","pass":"Hitungaja18!","tfa":"74RF7YL5LLGFPN6XB5EY3RB2CAAKH6B4","note":"FULL","sold":false}]},{"id":"m7hkxkwi","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : mipoqofi604@outlook.com\n🔒: Janganusil1!\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"5whth8pp","email":"mipoqofi604@outlook.com","pass":"Janganusil1!","tfa":"W4J44TI457NRFKSOUTLIPSPX4DDVQU2F","note":"FULL","sold":false}]},{"id":"23hke0i7","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : alskyazx@gmail.com\n🔒: Janganusil2!\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"ss1blmb4","email":"alskyazx@gmail.com","pass":"Janganusil2!","tfa":"HBANNOCCBWWDFJECB3RPUSPKRPPFXNGG","note":"FULL","sold":false}]},{"id":"ukh74jcu","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : alasybaew@gmail.com\n🔒: Chatgptgiare2026\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"n1cb42td","email":"alasybaew@gmail.com","pass":"Chatgptgiare2026","tfa":"UXPUV27UN5MULPGSHZTAWOFTF5VXA76D","note":"FULL","sold":false}]},{"id":"bqfdxwxe","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : loreawes@gmail.com\n🔒: Chatgptgiare2026\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"07m3khr6","email":"loreawes@gmail.com","pass":"Chatgptgiare2026","tfa":"SAPSYHZHVIDSUNZXQ3YCSWOJL7BYHHQ7","note":"FULL","sold":false}]},{"id":"pjoqgk3p","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : alerynea@gmail.com\n🔒: Janganusil123\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"96p2uwfo","email":"alerynea@gmail.com","pass":"Janganusil123","tfa":"KCZCPEHUQ5MKDBFLVHQA6W7FAEUCBUCD","note":"FULL","sold":false}]},{"id":"d0mdrf10","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : yuzuhanim29@gmail.com\n🔒: Janganusil123\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"hhxvvxno","email":"yuzuhanim29@gmail.com","pass":"Janganusil123","tfa":"WZ7LJV3EEYHE55YIEZ6GVD7AJ5BNM72V","note":"FULL","sold":false}]},{"id":"aea6ncht","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : ruthwhitek590@gmail.com\n🔒 : Chatgptgiare2026\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"7l0fsmof","email":"ruthwhitek590@gmail.com","pass":"Chatgptgiare2026","tfa":"WEE6MZJR75JWH5N6ER5NSCCC2LJPPHKU","note":"FULL","sold":false}]},{"id":"nwvgfo4n","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : carvalhoblue678@gmail.com\n🔒: CHATGPT@8386\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"cagmfd5z","email":"carvalhoblue678@gmail.com","pass":"CHATGPT@8386","tfa":"NN3T7NOVMS4J42NTDOMCZEMCHW2KODN7","note":"FULL","sold":false}]},{"id":"g9u1izm0","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : sarahthomasb597@gmail.com\n🔒: Chatgptgiare2026\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"o9njh7ds","email":"sarahthomasb597@gmail.com","pass":"Chatgptgiare2026","tfa":"EH67OL5BUSKES3KLSSO4MINBGGOC443Q","note":"FULL","sold":false}]},{"id":"rvlddyhe","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : BriedeTwait2641@outlook.com\n🔒: Chatgptgiare2026\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"2rx0vdez","email":"BriedeTwait2641@outlook.com","pass":"Chatgptgiare2026","tfa":"AXPNCVES23PDVCNL6PYYEDOHYL7727EV","note":"FULL","sold":false}]},{"id":"3e8xuz1n","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : CushwaBrister8403@outlook.com\n🔒: Chatgptgiare2026\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"uwrsyawi","email":"CushwaBrister8403@outlook.com","pass":"Chatgptgiare2026","tfa":"PO3XAWHUUNVVUGKO4ZM5EUVEULWW4BAW","note":"HARIAN-MINGGUAN AJA","sold":false}]},{"id":"7jga9r2u","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : benjaminahmed413@outlook.com\n🔒: Chatgptgiare2026\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"usg28tgf","email":"benjaminahmed413@outlook.com","pass":"Chatgptgiare2026","tfa":"46KSAVX3KTZXP3TPUGZRKHXGD3EYFCL5","note":"FULL","sold":false}]},{"id":"hmft3v8r","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : lauragill8485@hotmail.com\n🔒: JXRZv!P7K3aefD\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"nj8f4cyp","email":"lauragill8485@hotmail.com","pass":"JXRZv!P7K3aefD","tfa":"NKOG5Q4XFJP5CK2U5M35ONTBXCEJW7UW","note":"FULL","sold":false}]},{"id":"9lem6lm7","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : matxchavess@gmail.com\n🔒: Janganusil123\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"75w5c2o3","email":"matxchavess@gmail.com","pass":"Janganusil123","tfa":"4GDMUAIKYEEBLCADBVNFOHJELEEM2THX","note":"FULL SLOT","sold":false}]},{"id":"nek1o7lf","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : cloursy130@gmail.com\n🔒: Janganusil123\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"mgxx0yir","email":"cloursy130@gmail.com","pass":"Janganusil123","tfa":"35GBXVM3UIY2QCW7ZIEIDXMK4KEDBQTR","note":"FULL SLOT","sold":false}]},{"id":"z9n90hz3","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : dylangrewal2243@hotmail.com\n🔒: aWqd!7VbzxuE9\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"e1zbgcko","email":"dylangrewal2243@hotmail.com","pass":"aWqd!7VbzxuE9","tfa":"EJ3T2YBLWJPOUZHIHMFC4LKAVBUMGV2Z","note":"FULL SLOT","sold":false}]},{"id":"v02xvtn0","icon":"🌷","name":"CHATGPT GO","snk":"𖥔 CHATGPT SHARING ONE MONTH 𖥔\n   \n💌: JaslynOlivio36032@outlook.com\nPass : Janganusil1!\n\nTerms and Condition\n\nDILARANG LOGIN LOGOUT SESUKA HATI, GARANSI HANYA 1X LOGIN JIKA LOGOUT!\n\n➛ Sebelum Login Harap Clear Cache (web) atau Clear Data (app)\n➛ Dilarang Otak Atik Akun \n➛ Dilarang Otak Atik Billing Payment\n➛ Tolong agar selalu backup data yang anda searching di chatgpt\n➛ Maksimal 1 device \n➛ 27-30 Days Termasuk 1 Bulan\n➛ Dilarang Mengaktifkan OTP/V2L Pada Akun\n- DILARANG ADD PASSKEY!\n➛ Send Proof Login For Warranty \n\nthank u for your order, have a lovely day! \u003c3","pageId":"obl7e02e","accounts":[{"id":"zg2mb6bb","email":"JaslynOlivio36032@outlook.com","pass":"Janganusil1!","tfa":"JaslynOlivio36032@outlook.com|ydysa153392|M.C541_SN1.0.U.MsaArtifacts.-ChNjcxCVNegKRNcWOSdSkbyOk3yCtqk7YfxgGa8EoTEqyM3kyH7FIe2AkGjqciD170EA3xE0myrflOUA1RMtWJFJCHm*UY8evd9DeEiSTkuhha6BQCV45cNf6z3fcN*KQ4RYD1UCNTBh3hlKLwud4Ckn*w03ckge3nDbGUgeS294*!vkSb5r0TD!MArIzEPhsL9Z*icbPbLuGKWMFLlXvoFBB!SVwHVEbQNVSMzHm3uPd2vSDr*huJ9d5QgPPVfxTCBDaj1eiifK2iI8cb5icPzgTTGdeKpcZyjUoNydq!2gw4fOrDLR!2rSABMPFKywakHWH9eXNLAXA2d!iaeDf84F5dGVaw*UfGytZCFi07ja8*AvNUKcenP!fah4mMLu3qR0pUGWuDTC0yuq2xdAuhk$|9e5f94bc-e8a4-4e73-b8be-63364c29d753","note":"FULL","sold":false}]},{"id":"qrrdj89b","icon":"🌷","name":"CHATGPT GO","snk":"𖥔 CHATGPT SHARING ONE MONTH 𖥔\n   \n💌: geaneeth@gmail.com\nPass : Janganusil1!\n\nTerms and Condition\n\nDILARANG LOGIN LOGOUT SESUKA HATI, GARANSI HANYA 1X LOGIN JIKA LOGOUT!\n\n➛ Sebelum Login Harap Clear Cache (web) atau Clear Data (app)\n➛ Dilarang Otak Atik Akun \n➛ Dilarang Otak Atik Billing Payment\n➛ Tolong agar selalu backup data yang anda searching di chatgpt\n➛ Maksimal 1 device \n➛ 27-30 Days Termasuk 1 Bulan\n➛ Dilarang Mengaktifkan OTP/V2L Pada Akun\n- DILARANG ADD PASSKEY!\n➛ Send Proof Login For Warranty \n\nthank u for your order, have a lovely day! \u003c3","pageId":"obl7e02e","accounts":[{"id":"krcfodog","email":"geaneeth@gmail.com","pass":"Janganusil1!","tfa":"EG5XNTB2NLGLDCNBVIOM5JIEY3IYXTFU","note":"HARIAN AVAIL","sold":false}]},{"id":"q1q67u0f","icon":"🌷","name":"CHATGPT GO","snk":"𖥔 CHATGPT SHARING ONE MONTH 𖥔\n   \n💌: bernardneha861@hotmail.com\nPass : Janganusil123\n\nTerms and Condition\n\nDILARANG LOGIN LOGOUT SESUKA HATI, GARANSI HANYA 1X LOGIN JIKA LOGOUT!\n\n➛ Sebelum Login Harap Clear Cache (web) atau Clear Data (app)\n➛ Dilarang Otak Atik Akun \n➛ Dilarang Otak Atik Billing Payment\n➛ Tolong agar selalu backup data yang anda searching di chatgpt\n➛ Maksimal 1 device \n➛ 27-30 Days Termasuk 1 Bulan\n➛ Dilarang Mengaktifkan OTP/V2L Pada Akun\n- DILARANG ADD PASSKEY!\n➛ Send Proof Login For Warranty \n\nthank u for your order, have a lovely day! \u003c3","pageId":"obl7e02e","accounts":[{"id":"7atvbsql","email":"bernardneha861@hotmail.com","pass":"Janganusil123","tfa":"KJZVVKDDITXNDG6DWOFPWIVYQB575KOE","note":"HARIAN AVAIL","sold":false}]},{"id":"t05m1o7q","icon":"🌷","name":"CHATGPT GO","snk":"𖥔 CHATGPT SHARING ONE MONTH 𖥔\n   \n💌: grecolouis30@hotmail.com\nPass : Janganusil123\n\nTerms and Condition\n\nDILARANG LOGIN LOGOUT SESUKA HATI, GARANSI HANYA 1X LOGIN JIKA LOGOUT!\n\n➛ Sebelum Login Harap Clear Cache (web) atau Clear Data (app)\n➛ Dilarang Otak Atik Akun \n➛ Dilarang Otak Atik Billing Payment\n➛ Tolong agar selalu backup data yang anda searching di chatgpt\n➛ Maksimal 1 device \n➛ 27-30 Days Termasuk 1 Bulan\n➛ Dilarang Mengaktifkan OTP/V2L Pada Akun\n- DILARANG ADD PASSKEY!\n➛ Send Proof Login For Warranty \n\nthank u for your order, have a lovely day! \u003c3","pageId":"obl7e02e","accounts":[{"id":"tbkusamh","email":"grecolouis30@hotmail.com","pass":"Janganusil123","tfa":"OJT2YO4YUK3VPERUOJKNJDLVKIMGBTWJ","note":"HARIAN AVAIL","sold":false}]},{"id":"vyvxpufc","icon":"🌷","name":"CHATGPT GO","snk":"𖥔 CHATGPT SHARING ONE MONTH 𖥔\n   \n💌: suzukiella8370@outlook.com\nPass : Janganusil123\n\nTerms and Condition\n\nDILARANG LOGIN LOGOUT SESUKA HATI, GARANSI HANYA 1X LOGIN JIKA LOGOUT!\n\n➛ Sebelum Login Harap Clear Cache (web) atau Clear Data (app)\n➛ Dilarang Otak Atik Akun \n➛ Dilarang Otak Atik Billing Payment\n➛ Tolong agar selalu backup data yang anda searching di chatgpt\n➛ Maksimal 1 device \n➛ 27-30 Days Termasuk 1 Bulan\n➛ Dilarang Mengaktifkan OTP/V2L Pada Akun\n- DILARANG ADD PASSKEY!\n➛ Send Proof Login For Warranty \n\nthank u for your order, have a lovely day! \u003c3","pageId":"obl7e02e","accounts":[{"id":"0xw9ombk","email":"suzukiella8370@outlook.com","pass":"Janganusil123","tfa":"Q74CZA2CURSIH5XXPB4N5XZQ3SKGJZ4T","note":"AVAIL BULANAN HARIAN","sold":false}]},{"id":"8si1s28o","icon":"🌷","name":"CLAUDE","snk":"⋆ ⾕ : ▦ claude sharing 5U 1 month \n\n💌 : msnusrat3637@gmail.com\n🗝️ : login by code\n\n𝙨𝙮𝙖𝙧𝙖𝙩 & 𝙠𝙚𝙩𝙚𝙣𝙩𝙪𝙖𝙣 : \n— sebelum login, mohon clear data / clear cache safari / browser\n— langsung hubungi seller untuk meminta verif \n— 𝙩𝙤𝙡𝙤𝙣𝙜 𝙠𝙞𝙧𝙞𝙢 𝙗𝙪𝙠𝙩𝙞 𝙡𝙤𝙜𝙞𝙣 𝙮𝙖 𝙪𝙣𝙩𝙪𝙠 𝙠𝙡𝙖𝙞𝙢 𝙜𝙖𝙧𝙖𝙣𝙨𝙞\n— dilarang mengganti email & password \n— dilarang mengutak atik billing pembayaran\n— sharing only login 1 device\n— 25 - 30 hari = 1 bulan\n— upload banyak file / bikin banyak visualisasi = denda 200k per user \n— buat simple tasks, pakai opus 5 dengan effort low \n— jangan pakai effort extra high/max, outputnya ga beda jauh sama high tapi ngabisin limit jauh lebih banyak\n— dilarang nyalain usage credits, ketahuan nyalain? denda 2× lipat\n\nnote :\n• patuhi snk untuk garansi, melanggar = 𝗱𝗲𝗻𝗱𝗮 𝟱𝟬𝟬𝗸 & 𝗴𝗮𝗿𝗮𝗻𝘀𝗶 𝗵𝗮𝗻𝗴𝘂𝘀\n• kebijakan aplikasi dapat berubah sewaktu waktu, tidak ada garansi untuk perubahan kebijakan aplikasi karena diluar kendali seller","pageId":"hwxb1gb1","accounts":[{"id":"kqmopajm","email":"msnusrat3637@gmail.com","pass":"","tfa":"https://m.zayvex.cloud/s/w8Dgy4CcBcx4Ho1gWF_J9HMAZ49rIBBpSIU2M6M0AwQ","note":"FULL🔒","sold":false}]},{"id":"gwq8lxvi","icon":"🌷","name":"CLAUDE","snk":"⋆ ⾕ : ▦ claude sharing 5U 1 month \n\n💌 : gayavance047322@outlook.com\n🗝️ : hsluog530240\n\n𝙨𝙮𝙖𝙧𝙖𝙩 & 𝙠𝙚𝙩𝙚𝙣𝙩𝙪𝙖𝙣 : \n— sebelum login, mohon clear data / clear cache safari / browser\n— langsung hubungi seller untuk meminta verif \n— 𝙩𝙤𝙡𝙤𝙣𝙜 𝙠𝙞𝙧𝙞𝙢 𝙗𝙪𝙠𝙩𝙞 𝙡𝙤𝙜𝙞𝙣 𝙮𝙖 𝙪𝙣𝙩𝙪𝙠 𝙠𝙡𝙖𝙞𝙢 𝙜𝙖𝙧𝙖𝙣𝙨𝙞\n— dilarang mengganti email & password \n— dilarang mengutak atik billing pembayaran\n— sharing only login 1 device\n— 25 - 30 hari = 1 bulan\n— upload banyak file / bikin banyak visualisasi = denda 200k per user \n— buat simple tasks, pakai opus 5 dengan effort low \n— jangan pakai effort extra high/max, outputnya ga beda jauh sama high tapi ngabisin limit jauh lebih banyak\n— dilarang nyalain usage credits, ketahuan nyalain? denda 2× lipat\n\nnote :\n• patuhi snk untuk garansi, melanggar = 𝗱𝗲𝗻𝗱𝗮 𝟱𝟬𝟬𝗸 & 𝗴𝗮𝗿𝗮𝗻𝘀𝗶 𝗵𝗮𝗻𝗴𝘂𝘀\n• kebijakan aplikasi dapat berubah sewaktu waktu, tidak ada garansi untuk perubahan kebijakan aplikasi karena diluar kendali seller","pageId":"hwxb1gb1","accounts":[{"id":"axhkj6go","email":"gayavance047322@outlook.com","pass":"hsluog530240","tfa":"https://m.zayvex.cloud/s/HI1VxBfOCraCexIlU39mvJL2wU_DjoKQzS-2qRN2zy4","note":"FULL🔒","sold":false}]},{"id":"w54401of","icon":"🌷","name":"CLAUDE","snk":"⋆ ⾕ : ▦ claude sharing 5U 1 month \n\n💌 : novakhamicoznx@outlook.com\n\n𝙨𝙮𝙖𝙧𝙖𝙩 & 𝙠𝙚𝙩𝙚𝙣𝙩𝙪𝙖𝙣 : \n— sebelum login, mohon clear data / clear cache safari / browser\n— langsung hubungi seller untuk meminta verif \n— 𝙩𝙤𝙡𝙤𝙣𝙜 𝙠𝙞𝙧𝙞𝙢 𝙗𝙪𝙠𝙩𝙞 𝙡𝙤𝙜𝙞𝙣 𝙮𝙖 𝙪𝙣𝙩𝙪𝙠 𝙠𝙡𝙖𝙞𝙢 𝙜𝙖𝙧𝙖𝙣𝙨𝙞\n— dilarang mengganti email & password \n— dilarang mengutak atik billing pembayaran\n— sharing only login 1 device\n— 25 - 30 hari = 1 bulan\n— upload banyak file / bikin banyak visualisasi = denda 200k per user \n— buat simple tasks, pakai opus 5 dengan effort low \n— jangan pakai effort extra high/max, outputnya ga beda jauh sama high tapi ngabisin limit jauh lebih banyak\n— dilarang nyalain usage credits, ketahuan nyalain? denda 2× lipat\n\nnote :\n• patuhi snk untuk garansi, melanggar = 𝗱𝗲𝗻𝗱𝗮 𝟱𝟬𝟬𝗸 & 𝗴𝗮𝗿𝗮𝗻𝘀𝗶 𝗵𝗮𝗻𝗴𝘂𝘀\n• kebijakan aplikasi dapat berubah sewaktu waktu, tidak ada garansi untuk perubahan kebijakan aplikasi karena diluar kendali seller","pageId":"hwxb1gb1","accounts":[{"id":"99i4hlfm","email":"novakhamicoznx@outlook.com","pass":"","tfa":"https://m.zayvex.cloud/s/p3kJ2OmA1niXHVIb7JD_KBlHNxWcUxnGbuWQ3oJBaCM","note":"AVAIL 3 SLOT","sold":false}]},{"id":"b93ekdzi","icon":"🌷","name":"CLAUDE","snk":"⋆ ⾕ : ▦ claude sharing 3U 1 month \n\n💌 : chhumfluckozs@outlook.com\n🔒 : oduje64190\n\n𝙨𝙮𝙖𝙧𝙖𝙩 & 𝙠𝙚𝙩𝙚𝙣𝙩𝙪𝙖𝙣 : \n— sebelum login, mohon clear data / clear cache safari / browser\n— langsung hubungi seller untuk meminta verif \n— 𝙩𝙤𝙡𝙤𝙣𝙜 𝙠𝙞𝙧𝙞𝙢 𝙗𝙪𝙠𝙩𝙞 𝙡𝙤𝙜𝙞𝙣 𝙮𝙖 𝙪𝙣𝙩𝙪𝙠 𝙠𝙡𝙖𝙞𝙢 𝙜𝙖𝙧𝙖𝙣𝙨𝙞\n— dilarang mengganti email & password \n— dilarang mengutak atik billing pembayaran\n— sharing only login 1 device\n— 25 - 30 hari = 1 bulan\n— upload banyak file / bikin banyak visualisasi = denda 200k per user \n— buat simple tasks, pakai opus 5 dengan effort low \n— jangan pakai effort extra high/max, outputnya ga beda jauh sama high tapi ngabisin limit jauh lebih banyak\n— dilarang nyalain usage credits, ketahuan nyalain? denda 2× lipat\n\nnote :\n• patuhi snk untuk garansi, melanggar = 𝗱𝗲𝗻𝗱𝗮 𝟱𝟬𝟬𝗸 & 𝗴𝗮𝗿𝗮𝗻𝘀𝗶 𝗵𝗮𝗻𝗴𝘂𝘀\n• kebijakan aplikasi dapat berubah sewaktu waktu, tidak ada garansi untuk perubahan kebijakan aplikasi karena diluar kendali seller","pageId":"hwxb1gb1","accounts":[{"id":"2h8fs83a","email":"chhumfluckozs@outlook.com","pass":"oduje64190","tfa":"https://m.zayvex.cloud/s/5lCwvdZ2kv12YoE8dxR4E1yaK0MOkH5zSKV1GKXPY0o","note":"AVAIL 2 SLOT","sold":false}]},{"id":"lfasl0xc","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : strwberries.latte@gmail.com\n🔒: Janganusil123\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"jw16gsrt","email":"strwberries.latte@gmail.com","pass":"Janganusil123","tfa":"7CYUCQG2OEPYTLFMXPZCGGQBCAUGIKR4","note":"5 SLOT","sold":false}]},{"id":"bdh77jyd","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : juliapham8464@hotmail.com\n🔒: Janganusil123\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"we69q64n","email":"juliapham8464@hotmail.com","pass":"Janganusil123","tfa":"TZT2RMRR3XFW3UE4C3HYVGHZRKQXFYCL","note":"5-8 SLOT","sold":false}]},{"id":"q60b8b4k","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : kaitowilliams6065@hotmail.com\n🔒: Janganusil123\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"cv1420tq","email":"kaitowilliams6065@hotmail.com","pass":"Janganusil123","tfa":"AD6IJCJM3ZGKBMCCJVSIZA75NMLMRIUB","note":"5-8 SLOT","sold":false}]},{"id":"hflmc7ff","icon":"🌷","name":"CHATGPT PLUS","snk":"🌷CHATGPT SHARING ONE MONTH\n\n💌 : zhengmio64@hotmail.com\n🔒: BbUKGV6XMT%G\n\nWAJIB KONFIRMASI DULU KALAU MAU OTP\n\n📌 fulgar bf deac\n📌 25- 30d = 1 bulan\n\n❗️SYARAT & KETENTUAN❗️\n📍 USE 1 DEVICE ONLY  \n📍 bila limit, tunggu saja. akan di perbarusi setiap jam nya\n📍don't change email & password\n📍jangan otak-atik payment dan akun\n📍𝐩𝐫𝐞𝐦𝐢𝐮𝐦 hanya bisa 80 pertanyaan per 3 jam yaaa (ketentuan dari chatgpt)\n📍kalau pertanyaan yg tidak mengandung foto/files dan karakternya tidak lebih dari 500-3000 kata sebaiknya pakai fitur 3.5 / pro / chatgpt biasa\n📍tidak boleh login-logout, gunakan device tetap \n📍jika butuh verif untuk login harap hubungi admin, pastikan janjian agar tidak saling menunggu\n📍jika tidak ada proof login setelah login, maka jika terlogout tidak ada toleransi untuk login kembali\n\n📌 void warranty if: \n— tidak mengirimkan proof login dalam 1x24 jam  \n— melanggar snk yang telah diberikan di atas\n— aktikan codex ? = denda 500k","pageId":"u6w170hy","accounts":[{"id":"zzcz0gle","email":"zhengmio64@hotmail.com","pass":"BbUKGV6XMT%G","tfa":"IKYOIZIH5U6ABMSY7E2PK7JDZFZNK66L","note":"5-8 SLOT","sold":false}]},{"id":"qno0tvt6","icon":"🌷","name":"CHATGPT GO","snk":"𖥔 CHATGPT SHARING ONE MONTH 𖥔\n   \n💌: martinschiara9029@outlook.com\nPass : Janganusil1!\n\nTerms and Condition\n\nDILARANG LOGIN LOGOUT SESUKA HATI, GARANSI HANYA 1X LOGIN JIKA LOGOUT!\n\n➛ Sebelum Login Harap Clear Cache (web) atau Clear Data (app)\n➛ Dilarang Otak Atik Akun \n➛ Dilarang Otak Atik Billing Payment\n➛ Tolong agar selalu backup data yang anda searching di chatgpt\n➛ Maksimal 1 device \n➛ 27-30 Days Termasuk 1 Bulan\n➛ Dilarang Mengaktifkan OTP/V2L Pada Akun\n- DILARANG ADD PASSKEY!\n➛ Send Proof Login For Warranty \n\nthank u for your order, have a lovely day! \u003c3","pageId":"obl7e02e","accounts":[{"id":"ha1lry03","email":"martinschiara9029@outlook.com","pass":"Janganusil1!","tfa":"CWDXF3XYWFNZC36AGFIHM2KH6TIJSRJK","note":"5-8 SLOT","sold":false}]},{"id":"gng5lgcu","icon":"🌷","name":"CLAUDE","snk":"⋆ ⾕ : ▦ claude sharing 3U 1 month \n\n💌 : violetzcxs@gmail.com\n\n𝙨𝙮𝙖𝙧𝙖𝙩 & 𝙠𝙚𝙩𝙚𝙣𝙩𝙪𝙖𝙣 : \n— sebelum login, mohon clear data / clear cache safari / browser\n— langsung hubungi seller untuk meminta verif \n— 𝙩𝙤𝙡𝙤𝙣𝙜 𝙠𝙞𝙧𝙞𝙢 𝙗𝙪𝙠𝙩𝙞 𝙡𝙤𝙜𝙞𝙣 𝙮𝙖 𝙪𝙣𝙩𝙪𝙠 𝙠𝙡𝙖𝙞𝙢 𝙜𝙖𝙧𝙖𝙣𝙨𝙞\n— dilarang mengganti email & password \n— dilarang mengutak atik billing pembayaran\n— sharing only login 1 device\n— 25 - 30 hari = 1 bulan\n— upload banyak file / bikin banyak visualisasi = denda 200k per user \n— buat simple tasks, pakai opus 5 dengan effort low \n— jangan pakai effort extra high/max, outputnya ga beda jauh sama high tapi ngabisin limit jauh lebih banyak\n— dilarang nyalain usage credits, ketahuan nyalain? denda 2× lipat\n\nnote :\n• patuhi snk untuk garansi, melanggar = 𝗱𝗲𝗻𝗱𝗮 𝟱𝟬𝟬𝗸 & 𝗴𝗮𝗿𝗮𝗻𝘀𝗶 𝗵𝗮𝗻𝗴𝘂𝘀\n• kebijakan aplikasi dapat berubah sewaktu waktu, tidak ada garansi untuk perubahan kebijakan aplikasi karena diluar kendali seller","pageId":"hwxb1gb1","accounts":[{"id":"j4n4dkal","email":"violetzcxs@gmail.com","pass":"","tfa":"BYGMAIL","note":"1 SLOT","sold":false}]},{"id":"8udgainr","icon":"🌷","name":"CLAUDE","snk":"⋆ ⾕ : ▦ claude sharing 5U 1 month \n\n💌 : mehtacarmen929@hotmail.com\n\n𝙨𝙮𝙖𝙧𝙖𝙩 & 𝙠𝙚𝙩𝙚𝙣𝙩𝙪𝙖𝙣 : \n— sebelum login, mohon clear data / clear cache safari / browser\n— langsung hubungi seller untuk meminta verif \n— 𝙩𝙤𝙡𝙤𝙣𝙜 𝙠𝙞𝙧𝙞𝙢 𝙗𝙪𝙠𝙩𝙞 𝙡𝙤𝙜𝙞𝙣 𝙮𝙖 𝙪𝙣𝙩𝙪𝙠 𝙠𝙡𝙖𝙞𝙢 𝙜𝙖𝙧𝙖𝙣𝙨𝙞\n— dilarang mengganti email & password \n— dilarang mengutak atik billing pembayaran\n— sharing only login 1 device\n— 25 - 30 hari = 1 bulan\n— upload banyak file / bikin banyak visualisasi = denda 200k per user \n— buat simple tasks, pakai opus 5 dengan effort low \n— jangan pakai effort extra high/max, outputnya ga beda jauh sama high tapi ngabisin limit jauh lebih banyak\n— dilarang nyalain usage credits, ketahuan nyalain? denda 2× lipat\n\nnote :\n• patuhi snk untuk garansi, melanggar = 𝗱𝗲𝗻𝗱𝗮 𝟱𝟬𝟬𝗸 & 𝗴𝗮𝗿𝗮𝗻𝘀𝗶 𝗵𝗮𝗻𝗴𝘂𝘀\n• kebijakan aplikasi dapat berubah sewaktu waktu, tidak ada garansi untuk perubahan kebijakan aplikasi karena diluar kendali seller","pageId":"hwxb1gb1","accounts":[{"id":"dcqjlfv1","email":"mehtacarmen929@hotmail.com","pass":"https://outlookreader.my.id/","tfa":"mehtacarmen929@hotmail.com|Ahwdz2!ddyp9|M.C527_BAY.0.U.MsaArtifacts.-CrL!tPxa9Vf7Gvou7kjwz5BCS9gNGR!iTKd*k2OW3Mblls453ZsGs9UZH9jBc5!pJqSoTTATvXcW7qqTt1sN*TdcBY5kJMwWx4XfHzESmeTIthhb7CUB3obf1SRyAr4E8!fLaUB00yKLqZqAB553cTfVVSApobN85FIQ45zb2mmmdqHsNLD0MhmhgwcJqRhf!1rk7RQDgV8WkcpQj77H0zxMjErGuuww!0GOTNCIyO3WmqLgJj*DTo*G1mxwnaMsgxMn4cwbuVPkY2UV4oCcPcwBI*q0kz2r1EU4qZ1EwvgfGAIa5yWL*xUP99LTMPRhlpsBH*xWCrXUr3dmdJD1HSyQHjP7cQO!g1S9TGslmKdtp!CT40GGrqo1BYDnXax1tMu1gIRR*EjRRgJSNSUE*vrI8J9y3abJplgBluIA3o05|9e5f94bc-e8a4-4e73-b8be-63364c29d753","note":"3 SLOT 1 KEEP","sold":false}]},{"id":"sa0y5md9","icon":"🌷","name":"CLAUDE","snk":"⋆ ⾕ : ▦ claude sharing 5U 1 month \n\n📧 mossognassefnsw@outlook.com\n🔑 mezidl436166\n\n𝙨𝙮𝙖𝙧𝙖𝙩 & 𝙠𝙚𝙩𝙚𝙣𝙩𝙪𝙖𝙣 : \n— sebelum login, mohon clear data / clear cache safari / browser\n— langsung hubungi seller untuk meminta verif \n— 𝙩𝙤𝙡𝙤𝙣𝙜 𝙠𝙞𝙧𝙞𝙢 𝙗𝙪𝙠𝙩𝙞 𝙡𝙤𝙜𝙞𝙣 𝙮𝙖 𝙪𝙣𝙩𝙪𝙠 𝙠𝙡𝙖𝙞𝙢 𝙜𝙖𝙧𝙖𝙣𝙨𝙞\n— dilarang mengganti email & password \n— dilarang mengutak atik billing pembayaran\n— sharing only login 1 device\n— 25 - 30 hari = 1 bulan\n— upload banyak file / bikin banyak visualisasi = denda 200k per user \n— buat simple tasks, pakai opus 5 dengan effort low \n— jangan pakai effort extra high/max, outputnya ga beda jauh sama high tapi ngabisin limit jauh lebih banyak\n— dilarang nyalain usage credits, ketahuan nyalain? denda 2× lipat\n\nnote :\n• patuhi snk untuk garansi, melanggar = 𝗱𝗲𝗻𝗱𝗮 𝟱𝟬𝟬𝗸 & 𝗴𝗮𝗿𝗮𝗻𝘀𝗶 𝗵𝗮𝗻𝗴𝘂𝘀\n• kebijakan aplikasi dapat berubah sewaktu waktu, tidak ada garansi untuk perubahan kebijakan aplikasi karena diluar kendali seller","pageId":"hwxb1gb1","accounts":[{"id":"vx3ahbkt","email":"mossognassefnsw@outlook.com","pass":"mezidl436166","tfa":"https://m.zayvex.cloud/s/_VS_eQOSnEsCrDU1FKv7r1DHc0xL4hfjU7gl42OAVK0","note":"5 SLOT","sold":false}]},{"id":"fgd0xvuo","icon":"🌷","name":"CLAUDE","snk":"⋆ ⾕ : ▦ claude sharing 3U 1 month \n\n📧 measeosabreuk@outlook.com\n🔑 tsaoa16390\n\n𝙨𝙮𝙖𝙧𝙖𝙩 & 𝙠𝙚𝙩𝙚𝙣𝙩𝙪𝙖𝙣 : \n— sebelum login, mohon clear data / clear cache safari / browser\n— langsung hubungi seller untuk meminta verif \n— 𝙩𝙤𝙡𝙤𝙣𝙜 𝙠𝙞𝙧𝙞𝙢 𝙗𝙪𝙠𝙩𝙞 𝙡𝙤𝙜𝙞𝙣 𝙮𝙖 𝙪𝙣𝙩𝙪𝙠 𝙠𝙡𝙖𝙞𝙢 𝙜𝙖𝙧𝙖𝙣𝙨𝙞\n— dilarang mengganti email & password \n— dilarang mengutak atik billing pembayaran\n— sharing only login 1 device\n— 25 - 30 hari = 1 bulan\n— upload banyak file / bikin banyak visualisasi = denda 200k per user \n— buat simple tasks, pakai opus 5 dengan effort low \n— jangan pakai effort extra high/max, outputnya ga beda jauh sama high tapi ngabisin limit jauh lebih banyak\n— dilarang nyalain usage credits, ketahuan nyalain? denda 2× lipat\n\nnote :\n• patuhi snk untuk garansi, melanggar = 𝗱𝗲𝗻𝗱𝗮 𝟱𝟬𝟬𝗸 & 𝗴𝗮𝗿𝗮𝗻𝘀𝗶 𝗵𝗮𝗻𝗴𝘂𝘀\n• kebijakan aplikasi dapat berubah sewaktu waktu, tidak ada garansi untuk perubahan kebijakan aplikasi karena diluar kendali seller","pageId":"hwxb1gb1","accounts":[{"id":"g8zm1fcr","email":"measeosabreuk@outlook.com","pass":"tsaoa16390","tfa":"https://m.zayvex.cloud/s/SViCdO_G7-Swlxxn_caNC8iNljqZ4Yvr-F0P0Sg7WLg","note":"3 SLOT","sold":false}]}],"cleanedJunk":true,"pages":[{"id":"u6w170hy","icon":"🌷","name":"ChatGPT Plus"},{"id":"obl7e02e","icon":"🌸","name":"ChatGPT Go"},{"id":"hwxb1gb1","icon":"☁️","name":"Claude"}],"cur":"hwxb1gb1"}}</script>
+<script>
+const KEY='softstock_v2';
+const $=s=>document.querySelector(s);
+const uid=()=>Math.random().toString(36).slice(2,10);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+const DEF_SNK=`❗ SYARAT & KETENTUAN ❗
+📍 USE 1 DEVICE ONLY
+📍 Jangan ubah email & password
+📍 Tidak boleh login-logout, gunakan device tetap
+📍 Jika butuh verifikasi untuk login, hubungi admin
+📍 Kirim bukti login (proof) maksimal 1x24 jam
+
+📌 Garansi hangus jika:
+— tidak mengirim proof login dalam 1x24 jam
+— melanggar S&K di atas`;
+
+const defaults={
+  settings:{name:'Soft Stock',pin:''},
+  snk:DEF_SNK,
+  products:[]
+};
+const clone=o=>JSON.parse(JSON.stringify(o));
+
+function load(){
+  try{const d=JSON.parse(localStorage.getItem(KEY));if(d&&d.products)return d}catch(e){}
+  try{ // migrasi dari versi sebelumnya
+    const o=JSON.parse(localStorage.getItem('softstock_v1'));
+    if(o&&o.products)return {
+      settings:{name:o.settings?.name||'Soft Stock',pin:''},snk:o.snk||DEF_SNK,
+      products:o.products.map(p=>({id:p.id,icon:p.icon||'🌷',name:p.name,snk:p.snk||'',
+        accounts:(p.accounts||[]).map(a=>({id:a.id,email:a.email,pass:a.pass,tfa:a.tfa||'',note:a.note||'',sold:!!a.sold}))}))
+    };
+  }catch(e){}
+  return clone(defaults);
+}
+// bersihkan data contoh bawaan versi sebelumnya (kalau masih ada di browser)
+const SAMPLE_ACC=['contoh@mail.com|password123','contoh1@mail.com|password1','contoh2@mail.com|password2','musik1@mail.com|password3'];
+const SAMPLE_PROD=['CONTOH PRODUK SHARING 1 BULAN','Streaming Premium','Musik Premium','Desain Premium'];
+function stripSamples(d){
+  d.products.forEach(p=>p.accounts=(p.accounts||[]).filter(a=>!SAMPLE_ACC.includes(a.email+'|'+a.pass)));
+  d.products=d.products.filter(p=>!(SAMPLE_PROD.includes(p.name)&&!p.accounts.length));
+  return d;
+}
+// pembersihan sekali jalan: hapus "akun" hasil paste postingan mentah (email/username berisi spasi atau titik dua)
+let junkRemoved=0;
+function stripJunk(d){
+  if(d.cleanedJunk)return d;
+  d.products.forEach(p=>{
+    const before=(p.accounts||[]).length;
+    p.accounts=(p.accounts||[]).filter(a=>!/[\s:]/.test(String(a.email||'').trim()));
+    junkRemoved+=before-p.accounts.length;
+  });
+  d.cleanedJunk=true;return d;
+}
+// halaman/kategori (ChatGPT Plus, ChatGPT Go, Claude, dst.)
+function ensurePages(d){
+  if(!Array.isArray(d.pages)||!d.pages.length){
+    d.pages=[{id:uid(),icon:'🌷',name:'ChatGPT Plus'},{id:uid(),icon:'🌸',name:'ChatGPT Go'},{id:uid(),icon:'☁️',name:'Claude'}];
+  }
+  d.products.forEach(p=>{if(!p.pageId||!d.pages.some(g=>g.id===p.pageId))p.pageId=d.pages[0].id});
+  if(!d.cur||!d.pages.some(g=>g.id===d.cur))d.cur=d.pages[0].id;
+  return d;
+}
+// kalau file ini membawa data terenkripsi dan browser ini masih kosong → tawarkan buka
+let hasLocal=false;try{hasLocal=!!localStorage.getItem(KEY)}catch(e){}
+let seedPending=null,seedPlain=null;
+try{
+  const t=($('#seed').textContent||'').trim();
+  if(!hasLocal&&t){const s=JSON.parse(t);if(s.plain)seedPlain=s.plain;else seedPending=s}
+}catch(e){}
+let db=ensurePages(stripJunk(stripSamples(seedPlain?clone(seedPlain):load())));
+if(!seedPending){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}}
+let filter='all';
+const openOtp=new Set();   // akun yang kode 2FA-nya sedang ditampilkan
+const closedSnk=new Set(); // kertas yang S&K-nya dilipat (default terbuka)
+
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){toast('Penyimpanan browser diblokir — pakai Backup')}};
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),2200)}
+function copy(t,msg){
+  (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast(msg||'Disalin 📋')).catch(()=>toast('Gagal menyalin'));
+}
+// konfirmasi buatan sendiri (confirm() bawaan browser diblokir di mode preview)
+let confirmCb=null;
+function ask(msg,cb){$('#cMsg').textContent=msg;confirmCb=cb;$('#dConf').showModal()}
+$('#cOk').onclick=()=>{$('#dConf').close();const f=confirmCb;confirmCb=null;if(f)f()};
+const effSnk=p=>(p.snk&&p.snk.trim())||db.snk;
+// teks lengkap satu kertas: judul + S&K + semua akun (email, password, kode akses, catatan)
+function paperText(p){
+  const parts=[`${p.icon} ${p.name}`,'',effSnk(p),'','━━━━━━━━━━'];
+  p.accounts.forEach((a,i)=>{
+    parts.push('',`${i+1}.${a.sold?' (TERJUAL)':''}`,`✉️ : ${a.email}`,`🔒 : ${a.pass}`);
+    if(a.tfa)parts.push('',`🛡️ : ${a.tfa}`);
+    if(a.note)parts.push(`📝 ${a.note}`);
+  });
+  return parts.join('\n');
+}
+const findProd=id=>db.products.find(p=>p.id===id);
+const findAcc=(pid,id)=>findProd(pid)?.accounts.find(a=>a.id===id);
+
+/* ===== render ===== */
+function render(){
+  $('#brand').textContent=db.settings.name;
+  document.title=db.settings.name+' ✿ Arsip Akun';
+  $('#lockBtn').hidden=!db.settings.pin;
+  renderTabs();
+  const prods=db.products.filter(p=>p.pageId===db.cur);
+  let av=0,sd=0;prods.forEach(p=>p.accounts.forEach(a=>a.sold?sd++:av++));
+  $('#stats').textContent=`${av} tersedia · ${sd} terjual · ${prods.length} kertas`;
+
+  const q=$('#q').value.trim().toLowerCase();
+  const html=prods.map(p=>{
+    const nameHit=!q||p.name.toLowerCase().includes(q);
+    let accs=p.accounts.filter(a=>filter==='all'||(filter==='ready'&&!a.sold)||(filter==='sold'&&a.sold));
+    if(q&&!nameHit)accs=accs.filter(a=>(a.email+' '+a.note).toLowerCase().includes(q));
+    if(q&&!nameHit&&!accs.length)return '';
+    const ready=p.accounts.filter(a=>!a.sold).length;
+    return `<article class="paper">
+      <div class="phead">
+        <div>
+          <div class="ptitle">${esc(p.icon)} ${esc(p.name)}</div>
+          <div class="pcount"><b>${ready}</b> tersedia · ${p.accounts.length-ready} terjual</div>
+        </div>
+        <div class="ptools">
+          <button class="btn sm lav" data-a="pedit" data-p="${p.id}" title="Edit kertas">✏️</button>
+          <button class="btn sm danger" data-a="pdel" data-p="${p.id}" title="Hapus kertas">🗑️</button>
+        </div>
+      </div>
+      <details class="snk" data-p="${p.id}" ${closedSnk.has(p.id)?'':'open'}>
+        <summary>📌 Syarat & Ketentuan ${p.snk&&p.snk.trim()?'':'(umum)'}</summary>
+        <div class="snktext">${esc(effSnk(p))}</div>
+        <button class="btn sm lav" data-a="copyS" data-p="${p.id}">📋 Salin S&K</button>
+      </details>
+      <div class="accs">
+        ${accs.length?accs.map(a=>accHTML(p,a)).join(''):'<div class="hint" style="text-align:center">Belum ada akun 🌷</div>'}
+      </div>
+      <div class="pfoot"><button class="btn sm mint" data-a="padd" data-p="${p.id}">＋ Tambah Akun</button>${p.accounts.length?`<button class="btn sm lav" data-a="copyAll" data-p="${p.id}">📄 Salin semua</button><button class="btn sm danger" data-a="pclear" data-p="${p.id}">🧹 Hapus semua akun</button>`:''}</div>
+    </article>`;
+  }).join('');
+  $('#list').innerHTML=html||'<div class="empty">Belum ada kertas 🌷<br>Klik “＋ Kertas Baru” untuk mulai.</div>';
+  tick(true);
+}
+function accHTML(p,a){
+  const d=`data-p="${p.id}" data-id="${a.id}"`;
+  return `<div class="acc ${a.sold?'sold':''}">
+    <div class="ln"><span class="k">✉️</span><span class="v">${esc(a.email)}</span><button class="btn sm" data-a="copyE" ${d}>📋</button></div>
+    <div class="ln"><span class="k">🔒</span><span class="v">${esc(a.pass)}</span><button class="btn sm" data-a="copyP" ${d}>📋</button></div>
+    ${a.note?`<div class="noteln">📝 ${esc(a.note)}</div>`:''}
+    ${a.tfa?`<div class="kgap"></div>
+    <div class="kblock">
+      <div class="klabel">🛡️ KODE AKSES</div>
+      <div class="ln"><span class="v kval">${esc(a.tfa)}</span><button class="btn sm" data-a="copyK" ${d} title="Salin kode akses">📋</button></div>
+      ${openOtp.has(a.id)?`<div class="otpbox" data-p="${p.id}" data-id="${a.id}"><div class="row2"><span class="otpcode">······</span><button class="btn sm" data-a="otpcopy" ${d}>📋 Salin</button></div><div class="tbar"><i style="width:100%"></i></div><div class="prevln">⏮ sebelumnya (kadang masih diterima): <b class="otpprev">······</b></div></div>`:''}
+    </div>`:''}
+    <div class="abtn">
+      <span class="badge ${a.sold?'s':''}">${a.sold?'terjual':'tersedia'}</span>
+      ${a.tfa?`<button class="btn sm lav" data-a="otp" ${d}>${openOtp.has(a.id)?'🙈 Tutup kode':'🛡️ Kode 2FA'}</button>`:''}
+      <button class="btn sm mint" data-a="sold" ${d}>${a.sold?'↩︎ Tersedia':'✔ Terjual'}</button>
+      <button class="btn sm" data-a="post" ${d} title="Salin format post">📨</button>
+      <button class="btn sm lav" data-a="edit" ${d}>✏️</button>
+      <button class="btn sm danger" data-a="del" ${d}>✕</button>
+      ${p.accounts.indexOf(a)<p.accounts.length-1?`<button class="btn sm danger" data-a="below" ${d} title="Hapus semua akun di bawah akun ini">⤵︎ Hapus semua di bawahnya</button>`:''}
+    </div>
+  </div>`;
+}
+
+/* ===== kode 2FA (TOTP) ===== */
+function b32(s){
+  const A='ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+  s=String(s).toUpperCase().replace(/[^A-Z2-7]/g,'');
+  let bits='';for(const ch of s)bits+=A.indexOf(ch).toString(2).padStart(5,'0');
+  const out=[];for(let i=0;i+8<=bits.length;i+=8)out.push(parseInt(bits.slice(i,i+8),2));
+  return new Uint8Array(out);
+}
+async function totp(secret,t){
+  const key=await crypto.subtle.importKey('raw',b32(secret),{name:'HMAC',hash:'SHA-1'},false,['sign']);
+  const c=Math.floor(t/30000),buf=new ArrayBuffer(8),dv=new DataView(buf);
+  dv.setUint32(0,Math.floor(c/4294967296));dv.setUint32(4,c>>>0);
+  const h=new Uint8Array(await crypto.subtle.sign('HMAC',key,buf));
+  const o=h[19]&15;
+  const n=(((h[o]&127)<<24)|(h[o+1]<<16)|(h[o+2]<<8)|h[o+3])%1000000;
+  return String(n).padStart(6,'0');
+}
+async function tick(force){
+  const els=document.querySelectorAll('.otpbox');if(!els.length)return;
+  const now=Date.now(),step=Math.floor(now/30000);
+  for(const el of els){
+    const bar=el.querySelector('i');if(bar)bar.style.width=((30000-now%30000)/300)+'%';
+    if(!force&&el.dataset.step==step)continue;
+    el.dataset.step=step;
+    const a=findAcc(el.dataset.p,el.dataset.id);
+    const out=el.querySelector('.otpcode');
+    if(!a)continue;
+    try{
+      if(!(window.crypto&&crypto.subtle))throw 0;
+      const c=await totp(a.tfa,now);out.textContent=c.slice(0,3)+' '+c.slice(3);
+      const pv=await totp(a.tfa,now-30000),pe=el.querySelector('.otpprev');
+      if(pe)pe.textContent=pv.slice(0,3)+' '+pv.slice(3);
+    }catch(e){out.style.fontSize='14px';out.textContent='kunci tidak valid / browser tidak mendukung'}
+  }
+}
+setInterval(()=>tick(false),1000);
+
+/* ===== aksi di daftar ===== */
+$('#list').addEventListener('toggle',e=>{
+  const d=e.target;if(d.classList&&d.classList.contains('snk')){d.open?closedSnk.delete(d.dataset.p):closedSnk.add(d.dataset.p)}
+},true);
+$('#list').onclick=e=>{
+  const b=e.target.closest('button[data-a]');if(!b)return;
+  const pid=b.dataset.p,id=b.dataset.id,p=findProd(pid),a=id?findAcc(pid,id):null;
+  switch(b.dataset.a){
+    case 'pedit':openProd(p);break;
+    case 'pdel':ask(`Hapus kertas "${p.name}" beserta semua akunnya?`,()=>{db.products=db.products.filter(x=>x!==p);save();render();toast('Kertas dihapus')});break;
+    case 'copyS':copy(effSnk(p),'S&K disalin 📌');break;
+    case 'copyAll':copy(paperText(p),'Semua isi kertas disalin 📄');break;
+    case 'padd':openAdd(pid);break;
+    case 'pclear':
+      ask(`Hapus SEMUA ${p.accounts.length} akun di kertas "${p.name}"? Tidak bisa dibatalkan.`,()=>{
+        p.accounts.forEach(x=>openOtp.delete(x.id));p.accounts=[];save();render();toast('Semua akun dihapus 🧹');
+      });break;
+    case 'copyE':copy(a.email);break;
+    case 'copyP':copy(a.pass);break;
+    case 'copyK':copy(a.tfa,'Kode akses disalin 🛡️');break;
+    case 'otp':openOtp.has(id)?openOtp.delete(id):openOtp.add(id);render();break;
+    case 'otpcopy':copy((b.closest('.otpbox').querySelector('.otpcode').textContent||'').replace(/\s/g,''),'Kode 2FA disalin 🛡️');break;
+    case 'sold':a.sold=!a.sold;save();render();break;
+    case 'post':copy(`${p.icon} ${p.name}\n✉️ : ${a.email}\n🔒 : ${a.pass}${a.tfa?`\n\n🛡️ : ${a.tfa}`:''}`,'Format post disalin 📨');break;
+    case 'edit':
+      $('#ePid').value=pid;$('#eId').value=id;$('#eEmail').value=a.email;$('#ePass').value=a.pass;$('#eTfa').value=a.tfa||'';$('#eNote').value=a.note||'';
+      $('#dEA').showModal();break;
+    case 'below':{
+      const i=p.accounts.indexOf(a),n=p.accounts.length-i-1;
+      if(n>0)ask(`Hapus ${n} akun yang ada di bawah akun ini? Akun ini tetap disimpan. Tidak bisa dibatalkan.`,()=>{
+        p.accounts.slice(i+1).forEach(x=>openOtp.delete(x.id));
+        p.accounts=p.accounts.slice(0,i+1);save();render();toast(n+' akun dihapus 🧹');
+      });
+      break;
+    }
+    case 'del':ask('Hapus akun ini?',()=>{p.accounts=p.accounts.filter(x=>x!==a);openOtp.delete(id);save();render()});break;
+  }
+};
+
+/* ===== filter & cari ===== */
+document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
+  filter=c.dataset.f;
+  document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===c));
+  render();
+});
+$('#q').oninput=render;
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>b.closest('dialog').close());
+
+/* ===== halaman ===== */
+function renderTabs(){
+  $('#pageTabs').innerHTML=db.pages.map(g=>{
+    const n=db.products.filter(p=>p.pageId===g.id).reduce((s,p)=>s+p.accounts.filter(a=>!a.sold).length,0);
+    return `<button class="ptab ${g.id===db.cur?'on':''}" data-pg="${g.id}">${esc(g.icon)} ${esc(g.name)}<span class="pn">${n}</span></button>`;
+  }).join('')+`<button class="ptab add" id="addPage">＋ Halaman</button><button class="ptab add" id="editPage" title="Edit halaman ini">✏️</button>`;
+}
+function openPage(g){
+  $('#pgTitle').textContent=g?'Edit Halaman':'Halaman Baru';
+  $('#pgId').value=g?.id||'';$('#pgIcon').value=g?.icon||'🌷';$('#pgName').value=g?.name||'';
+  $('#pgDel').hidden=!g;
+  $('#dPage').showModal();
+}
+$('#pageTabs').onclick=e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.pg){db.cur=b.dataset.pg;save();render()}
+  else if(b.id==='addPage')openPage();
+  else if(b.id==='editPage')openPage(db.pages.find(g=>g.id===db.cur));
+};
+$('#pgSave').onclick=()=>{
+  const name=$('#pgName').value.trim();if(!name)return toast('Nama halaman wajib diisi');
+  const data={icon:$('#pgIcon').value.trim()||'🌷',name};
+  const id=$('#pgId').value;
+  if(id)Object.assign(db.pages.find(g=>g.id===id),data);
+  else{const g={id:uid(),...data};db.pages.push(g);db.cur=g.id}
+  save();$('#dPage').close();render();toast('Halaman tersimpan ✿');
+};
+$('#pgDel').onclick=()=>{
+  const id=$('#pgId').value,g=db.pages.find(x=>x.id===id);if(!g)return;
+  if(db.products.some(p=>p.pageId===id))return toast('Halaman masih berisi kertas — pindahkan atau hapus dulu');
+  if(db.pages.length<=1)return toast('Minimal harus ada 1 halaman');
+  $('#dPage').close();
+  ask(`Hapus halaman "${g.name}"?`,()=>{
+    db.pages=db.pages.filter(x=>x!==g);
+    if(db.cur===id)db.cur=db.pages[0].id;
+    save();render();toast('Halaman dihapus');
+  });
+};
+
+/* ===== kertas ===== */
+$('#addProd').onclick=()=>openProd();
+function openProd(p){
+  $('#prodTitle').textContent=p?'Edit Kertas':'Kertas Baru';
+  $('#pId').value=p?.id||'';$('#pIcon').value=p?.icon||'🌷';$('#pName').value=p?.name||'';$('#pSnk').value=p?.snk||'';
+  $('#pPage').innerHTML=db.pages.map(g=>`<option value="${g.id}">${esc(g.icon)} ${esc(g.name)}</option>`).join('');
+  $('#pPage').value=p?.pageId||db.cur;
+  $('#dProd').showModal();
+}
+$('#saveProd').onclick=()=>{
+  const name=$('#pName').value.trim();if(!name)return toast('Judul wajib diisi');
+  const data={icon:$('#pIcon').value.trim()||'🌷',name,snk:$('#pSnk').value.trim(),pageId:$('#pPage').value};
+  const id=$('#pId').value;
+  let newId=null;
+  if(id)Object.assign(findProd(id),data);else{newId=uid();db.products.push({id:newId,...data,accounts:[]})}
+  db.cur=data.pageId;
+  save();$('#dProd').close();render();toast('Tersimpan ✿');
+  if(newId)openAdd(newId); // kertas baru langsung minta akun + kode akses 2FA
+};
+
+/* ===== S&K umum ===== */
+$('#gSnk').onclick=()=>{$('#gText').value=db.snk;$('#dGen').showModal()};
+$('#saveGen').onclick=()=>{db.snk=$('#gText').value;save();$('#dGen').close();render();toast('S&K umum diperbarui ✿')};
+
+/* ===== tambah & edit akun ===== */
+const ADD_FIELDS=['aEmail','aPass','aTfa','aNote','aBulk'];
+function openAdd(pid){
+  const p=findProd(pid);if(!p)return;
+  $('#aPid').value=pid;$('#addTitle').textContent='Tambah Akun · '+p.name;
+  ADD_FIELDS.forEach(i=>$('#'+i).value='');
+  $('#dAdd').showModal();setTimeout(()=>$('#aEmail').focus(),50);
+}
+function addAccounts(more){
+  const p=findProd($('#aPid').value);if(!p)return;
+  const rows=[];
+  const email=$('#aEmail').value.trim();
+  if(email)rows.push({email,pass:$('#aPass').value.trim(),tfa:$('#aTfa').value.replace(/\s/g,''),note:$('#aNote').value.trim()});
+  $('#aBulk').value.split('\n').map(l=>l.trim()).filter(Boolean).forEach(l=>{
+    const [e,pw,tfa,...n]=l.split('|').map(s=>s.trim());
+    rows.push({email:e||'',pass:pw||'',tfa:(tfa||'').replace(/\s/g,''),note:n.join(' | ')});
+  });
+  if(!rows.length)return toast('Isi dulu email-nya');
+  rows.forEach(r=>p.accounts.push({id:uid(),...r,sold:false}));
+  save();render();toast(rows.length+' akun ditambahkan ✿');
+  if(more){ADD_FIELDS.forEach(i=>$('#'+i).value='');$('#aEmail').focus()}
+  else $('#dAdd').close();
+}
+$('#saveAdd').onclick=()=>addAccounts(false);
+$('#saveAddMore').onclick=()=>addAccounts(true);
+$('#saveEA').onclick=()=>{
+  const a=findAcc($('#ePid').value,$('#eId').value);if(!a)return;
+  a.email=$('#eEmail').value.trim();a.pass=$('#ePass').value.trim();
+  a.tfa=$('#eTfa').value.replace(/\s/g,'');a.note=$('#eNote').value.trim();
+  save();$('#dEA').close();render();toast('Akun diperbarui ✿');
+};
+
+/* ===== pengaturan, kunci, backup ===== */
+$('#setBtn').onclick=()=>{$('#sName').value=db.settings.name;$('#sPin').value=db.settings.pin||'';$('#dSet').showModal()};
+$('#saveSet').onclick=()=>{
+  db.settings.name=$('#sName').value.trim()||'Soft Stock';
+  db.settings.pin=$('#sPin').value;
+  save();$('#dSet').close();sessionStorage.setItem('ss_ok','1');render();toast('Pengaturan tersimpan ✿');
+};
+function checkLock(){
+  const ok=!db.settings.pin||sessionStorage.getItem('ss_ok')==='1';
+  $('#lock').hidden=ok;$('#app').hidden=!ok;
+  if(!ok)setTimeout(()=>$('#pinInput').focus(),50);
+}
+$('#unlockBtn').onclick=()=>{
+  if($('#pinInput').value===db.settings.pin){sessionStorage.setItem('ss_ok','1');$('#pinInput').value='';checkLock();render()}
+  else toast('PIN salah 🥺');
+};
+$('#pinInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('#unlockBtn').click()});
+$('#lockBtn').onclick=()=>{sessionStorage.removeItem('ss_ok');checkLock()};
+
+$('#expBtn').onclick=()=>{
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:'application/json'}));
+  a.download='backup-arsip-'+new Date().toISOString().slice(0,10)+'.json';a.click();
+  toast('Backup diunduh ⬇');
+};
+$('#impBtn').onclick=()=>$('#impFile').click();
+
+/* pindah data lewat teks (salin → tempel), tanpa perlu unduh file */
+function copyOrShow(t,msg){
+  const done=()=>toast(msg||'Disalin 📋');
+  const show=()=>{const x=$('#showText');x.value=t;$('#dShow').showModal();setTimeout(()=>{x.focus();x.select()},80)};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(done).catch(show);else show();
+}
+$('#showSel').onclick=()=>{const x=$('#showText');x.focus();x.select();x.setSelectionRange(0,x.value.length)};
+$('#cpData').onclick=()=>copyOrShow(JSON.stringify(db),'Data disalin 📋 — tempel di tempat baru');
+$('#pasteData').onclick=()=>{$('#pasteText').value='';$('#dPaste').showModal()};
+$('#pasteGo').onclick=()=>{
+  try{
+    const d=JSON.parse($('#pasteText').value.trim());
+    if(!d.products||!d.settings)throw 0;
+    d.products.forEach(p=>p.accounts=(p.accounts||[]).map(a=>({id:a.id||uid(),email:a.email||'',pass:a.pass||'',tfa:a.tfa||'',note:a.note||'',sold:!!a.sold})));
+    d.cleanedJunk=true;
+    db=ensurePages(d);save();$('#dPaste').close();render();toast('Data berhasil dipulihkan ✿');
+  }catch(e){toast('Teks data tidak valid — salin ulang dari tempat lama')}
+};
+
+/* ===== unduh index.html yang sudah membawa data (terenkripsi kata sandi) ===== */
+const enc=new TextEncoder(),dec=new TextDecoder();
+const b64=u=>{let s='';new Uint8Array(u).forEach(x=>s+=String.fromCharCode(x));return btoa(s)};
+const unb64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function pwKey(pw,salt,iter,usage){
+  const km=await crypto.subtle.importKey('raw',enc.encode(pw),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',hash:'SHA-256',salt,iterations:iter},km,{name:'AES-GCM',length:256},false,[usage]);
+}
+async function encryptDb(pw){
+  const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12)),it=200000;
+  const key=await pwKey(pw,salt,it,'encrypt');
+  const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,enc.encode(JSON.stringify(db)));
+  return {v:1,it,s:b64(salt),i:b64(iv),c:b64(ct)};
+}
+function buildHTML(seedStr){
+  // salin halaman, kosongkan semua bagian yang berisi data, lalu isi dengan data terenkripsi
+  const c=document.documentElement.cloneNode(true);
+  const q=s=>c.querySelector(s);
+  ['#list','#pageTabs','#stats','#cMsg','#pPage'].forEach(s=>{const e=q(s);if(e)e.innerHTML=''});
+  q('#toast').className='toast';q('#toast').textContent='';
+  q('#brand').textContent='Soft Stock';
+  q('#addTitle').textContent='Tambah Akun';
+  q('#prodTitle').textContent='Kertas Baru';
+  q('#pgTitle').textContent='Halaman Baru';
+  q('title').textContent='Soft Stock ✿ Arsip Akun';
+  ['#pId','#aPid','#eId','#ePid','#pgId'].forEach(s=>{const e=q(s);if(e)e.setAttribute('value','')});
+  c.querySelectorAll('dialog').forEach(d=>d.removeAttribute('open'));
+  q('#seed').textContent=seedStr;
+  return '<!DOCTYPE html>\n'+c.outerHTML;
+}
+async function doExport(mode){
+  const pw=$('#xPw').value;
+  if(pw&&pw.length<4)return toast('Kata sandi minimal 4 karakter (atau kosongkan)');
+  if(pw&&!(window.crypto&&crypto.subtle))return toast('Browser tidak mendukung enkripsi');
+  try{
+    toast('Memproses…');
+    const seedStr=pw?JSON.stringify(await encryptDb(pw)):JSON.stringify({v:1,plain:db}).replace(/</g,'\\u003c');
+    const html=buildHTML(seedStr);
+    if(mode==='copy')copyOrShow(html,'Kode index.html disalin 📋 — simpan sebagai index.html');
+    else{
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));
+      a.download='index.html';a.click();
+      toast('index.html berisi data diunduh 📦');
+    }
+    $('#dExp').close();
+  }catch(e){toast('Gagal membuat file 🥺')}
+}
+$('#expHtml').onclick=()=>{$('#xPw').value='';$('#dExp').showModal()};
+$('#xDl').onclick=()=>doExport('dl');
+$('#xCopy').onclick=()=>doExport('copy');
+$('#sdPw').addEventListener('keydown',e=>{if(e.key==='Enter')$('#sdGo').click()});
+$('#sdGo').onclick=async()=>{
+  try{
+    const key=await pwKey($('#sdPw').value,unb64(seedPending.s),seedPending.it,'decrypt');
+    const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:unb64(seedPending.i)},key,unb64(seedPending.c));
+    const d=JSON.parse(dec.decode(pt));
+    d.cleanedJunk=true;db=ensurePages(d);seedPending=null;save();
+    $('#dSeed').close();$('#sdPw').value='';
+    try{sessionStorage.setItem('ss_ok','1')}catch(e){}
+    checkLock();render();toast('Data berhasil dibuka ✿');
+  }catch(e){toast('Kata sandi salah 🥺')}
+};
+$('#impFile').onchange=e=>{
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const d=JSON.parse(r.result);if(!d.products||!d.settings)throw 0;
+      d.products.forEach(p=>p.accounts=(p.accounts||[]).map(a=>({id:a.id||uid(),email:a.email||'',pass:a.pass||'',tfa:a.tfa||'',note:a.note||'',sold:!!a.sold})));
+      d.cleanedJunk=true;db=ensurePages(d);save();render();toast('Data berhasil dipulihkan ✿');
+    }catch{toast('File backup tidak valid')}
+  };
+  r.readAsText(f);e.target.value='';
+};
+
+checkLock();
+render();
+if(junkRemoved)toast(junkRemoved+' entri berantakan sudah dibersihkan 🧹');
+if(seedPending)setTimeout(()=>$('#dSeed').showModal(),300);
+</script>
+</body>
+</html>
